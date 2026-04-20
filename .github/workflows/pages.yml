@@ -23,18 +23,16 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
-          cache-dependency-path: frontend/package-lock.json
 
       - name: Install dependencies
         working-directory: frontend
-        run: npm ci --prefer-offline || npm install
+        run: npm install
 
       - name: Build single-file HTML
         working-directory: frontend
         env:
           VITE_STORAGE: local
-        run: npm run build:local
+        run: npx vite build --outDir dist-local
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
