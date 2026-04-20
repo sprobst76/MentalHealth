@@ -183,6 +183,68 @@ export function OrientationModule({ data, onChange }: ModuleProps<OrientationDat
           );
         })}
       </div>
+
+      {data.responses.length >= 6 && (
+        <div className="mt-12">
+          <h2 className="display text-2xl text-ink mb-6 border-b border-line-soft pb-3">
+            Dein Profil
+          </h2>
+
+          {profile.topValues.length > 0 && (
+            <div className="mb-8">
+              <div className="text-xs tracking-[0.15em] uppercase text-ink-faint mb-4">
+                Erkannte Werte
+              </div>
+              <ul className="space-y-3">
+                {profile.topValues.map((v) => (
+                  <li key={v.id}>
+                    <div className="flex justify-between text-sm mb-1">
+                      <span className="text-ink font-medium">{v.label}</span>
+                      <span className="text-ink-faint">{Math.round(v.score * 100)} %</span>
+                    </div>
+                    <div className="h-1.5 bg-paper-3 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-sage rounded-full transition-all duration-500"
+                        style={{ width: `${Math.round(v.score * 100)}%` }}
+                      />
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {profile.activeSchemas.length > 0 && (
+            <div>
+              <div className="text-xs tracking-[0.15em] uppercase text-ink-faint mb-4">
+                Aktive Schema-Muster
+              </div>
+              <ul className="space-y-3">
+                {profile.activeSchemas.map((s) => (
+                  <li key={s.id}>
+                    <div className="flex justify-between text-sm mb-1">
+                      <span className="text-ink font-medium">{s.label}</span>
+                      <span className="text-ink-faint">{Math.round(s.score * 100)} %</span>
+                    </div>
+                    <div className="h-1.5 bg-paper-3 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-ocean rounded-full transition-all duration-500"
+                        style={{ width: `${Math.round(s.score * 100)}%` }}
+                      />
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {profile.topValues.length === 0 && profile.activeSchemas.length === 0 && (
+            <p className="text-ink-faint italic">
+              Beantworte noch ein paar Aussagen — dann zeichnen sich Muster ab.
+            </p>
+          )}
+        </div>
+      )}
     </div>
   );
 }
