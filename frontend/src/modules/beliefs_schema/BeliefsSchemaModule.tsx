@@ -118,6 +118,20 @@ export function BeliefsSchemaModule({ data, onChange, allData }: ModuleProps<Bel
                       {schema.typicalTrigger}
                     </p>
 
+                    <div className="p-4 bg-paper-2 rounded-sm border border-line-soft">
+                      <div className="text-xs tracking-[0.12em] uppercase text-ink-faint mb-3">
+                        Erkundungsfragen
+                      </div>
+                      <ul className="space-y-2">
+                        {schema.guidedQuestions.map((q, i) => (
+                          <li key={i} className="text-ink-soft text-sm leading-relaxed flex gap-2">
+                            <span className="text-ink-faint flex-shrink-0">·</span>
+                            <span>{q}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
                     <div>
                       <label className="block text-xs tracking-[0.12em] uppercase text-ink-faint mb-2">
                         Intensität

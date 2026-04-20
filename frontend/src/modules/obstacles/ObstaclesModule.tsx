@@ -12,6 +12,14 @@ function uid() {
   return Math.random().toString(36).slice(2, 10);
 }
 
+const EXPLORATION_PROMPTS = [
+  "Wie alt fühlst du dich in diesem Moment, wenn das Hindernis auftaucht?",
+  "Gibt es eine innere Stimme — klingt sie vertraut? Wessen Stimme könnte das sein?",
+  "Was hat der Teil von dir, der dieses Muster entwickelt hat, damals gebraucht?",
+  "Was wäre ein kleiner Schritt, der dir zeigt, dass du diesem Muster nicht folgen musst?",
+  "Wie kannst du dir selbst in diesem Moment Mitgefühl entgegenbringen?",
+];
+
 export function ObstaclesModule({ data, onChange, allData }: ModuleProps<ObstaclesData>) {
   const [openId, setOpenId] = useState<string | null>(null);
 
@@ -173,6 +181,20 @@ export function ObstaclesModule({ data, onChange, allData }: ModuleProps<Obstacl
                       className="w-full bg-paper border border-line px-3 py-2 rounded-sm text-ink placeholder:text-ink-faint focus:outline-none focus:border-ink-soft resize-none"
                     />
                   </div>
+
+                  <details>
+                    <summary className="text-xs tracking-[0.12em] uppercase text-ink-faint cursor-pointer hover:text-ink transition-colors">
+                      Erkundungsfragen
+                    </summary>
+                    <ul className="mt-3 space-y-2 pl-1">
+                      {EXPLORATION_PROMPTS.map((q, i) => (
+                        <li key={i} className="text-ink-soft text-sm leading-relaxed flex gap-2">
+                          <span className="text-ink-faint flex-shrink-0">·</span>
+                          <span>{q}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </details>
 
                   <button
                     type="button"

@@ -6,7 +6,7 @@ import { RatingDots } from "../../components/RatingDots";
 import type { OrientationData } from "../orientation/types";
 import { calcProfile } from "../orientation/scoring";
 import type { ModuleProps } from "../registry";
-import { VALUE_SUGGESTIONS } from "./constants";
+import { VALUE_PROMPTS, VALUE_SUGGESTIONS } from "./constants";
 import type { ValueItem, ValuesData } from "./types";
 
 function uid(): string {
@@ -15,6 +15,7 @@ function uid(): string {
 
 export function ValuesModule({ data, onChange, allData }: ModuleProps<ValuesData>) {
   const [draft, setDraft] = useState("");
+  const [showPrompts, setShowPrompts] = useState(false);
 
   const orientationSuggestions = useMemo(() => {
     const od = allData?.orientation as OrientationData | undefined;
@@ -66,6 +67,27 @@ export function ValuesModule({ data, onChange, allData }: ModuleProps<ValuesData
         title="Werte"
         subtitle="Was ist dir in deinem Leben wichtig? Wähle aus — oder ergänze, was fehlt. Gewichte später."
       />
+
+      <div className="mb-6">
+        <button
+          type="button"
+          onClick={() => setShowPrompts((v) => !v)}
+          className="text-sm text-ink-soft hover:text-ink transition-colors flex items-center gap-2"
+        >
+          <span className="text-ink-faint tracking-wider">▸</span>
+          Klärungsimpulse — Fragen, die helfen, Werte zu spüren
+        </button>
+        {showPrompts && (
+          <div className="mt-4 space-y-3 pl-4 border-l-2 border-line-soft">
+            {VALUE_PROMPTS.map((q, i) => (
+              <p key={i} className="text-ink-soft text-sm leading-relaxed">{q}</p>
+            ))}
+            <p className="text-ink-faint text-xs mt-2">
+              Notiere deine Gedanken im Reflexionsfeld unten.
+            </p>
+          </div>
+        )}
+      </div>
 
       {orientationSuggestions.length > 0 && (
         <div className="mb-6 p-5 border border-sage rounded-sm bg-paper-2">

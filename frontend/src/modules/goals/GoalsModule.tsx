@@ -14,8 +14,17 @@ function uid() {
 const HORIZONS: Horizon[] = ["30days", "quarter", "year", "longer"];
 const STATUSES: GoalStatus[] = ["active", "achieved", "paused"];
 
+const GOAL_PROMPTS = [
+  "Was genau willst du erreichen — so konkret, dass du es beschreiben könntest?",
+  "Woran wirst du erkennen, dass du es erreicht hast?",
+  "Warum ist dieses Ziel wichtig für dich — welchen Wert lebt es?",
+  "Was könnte dich aufhalten? (Das ist Vorbereitung, keine Niederlage.)",
+  "Was wäre dein allererster Schritt — heute oder diese Woche?",
+];
+
 export function GoalsModule({ data, onChange, allData }: ModuleProps<GoalsData>) {
   const [openId, setOpenId] = useState<string | null>(null);
+  const [showGoalGuide, setShowGoalGuide] = useState(false);
 
   const valueOptions = useMemo(() => {
     const vd = allData?.values as ValuesData | undefined;
@@ -61,6 +70,27 @@ export function GoalsModule({ data, onChange, allData }: ModuleProps<GoalsData>)
         title="Ziele"
         subtitle="Konkrete nächste Schritte, verankert in deinen Werten. Ein Ziel ohne Wert-Anker ist Beschäftigung; ein Wert ohne Ziel ist Absicht."
       />
+
+      <div className="mb-6">
+        <button
+          type="button"
+          onClick={() => setShowGoalGuide((v) => !v)}
+          className="text-sm text-ink-soft hover:text-ink transition-colors flex items-center gap-2"
+        >
+          <span className="text-ink-faint tracking-wider">▸</span>
+          Leitfragen — Wie formuliere ich ein gutes Ziel?
+        </button>
+        {showGoalGuide && (
+          <div className="mt-4 pl-4 border-l-2 border-line-soft space-y-2">
+            {GOAL_PROMPTS.map((q, i) => (
+              <p key={i} className="text-ink-soft text-sm leading-relaxed flex gap-2">
+                <span className="text-ink-faint flex-shrink-0">{i + 1}.</span>
+                <span>{q}</span>
+              </p>
+            ))}
+          </div>
+        )}
+      </div>
 
       <div className="space-y-4 mb-6">
         {data.goals.map((g) => {

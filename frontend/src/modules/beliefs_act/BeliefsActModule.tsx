@@ -10,8 +10,17 @@ function uid() {
   return Math.random().toString(36).slice(2, 10);
 }
 
+const DEFUSION_EXAMPLES = [
+  "Ich bemerke, dass ich den Gedanken habe, dass …",
+  "Mein Kopf erzählt mir gerade die Geschichte von …",
+  "Danke, Kopf — ich kenne diesen Gedanken. Ich muss ihm aber nicht folgen.",
+  "Ich beobachte, wie dieser Gedanke kommt und geht — wie eine Wolke.",
+  "Das ist nur ein Gedanke, keine Tatsache.",
+];
+
 export function BeliefsActModule({ data, onChange, allData }: ModuleProps<BeliefsActData>) {
   const [openId, setOpenId] = useState<string | null>(null);
+  const [showTips, setShowTips] = useState(false);
 
   const valueOptions = useMemo(() => {
     const vd = allData?.values as ValuesData | undefined;
@@ -49,6 +58,48 @@ export function BeliefsActModule({ data, onChange, allData }: ModuleProps<Belief
         title="Stärkende Glaubenssätze"
         subtitle="Nicht gegen den kritischen Gedanken kämpfen — stattdessen: Was ist mir wichtig, und was bin ich bereit zu tun, auch wenn Angst oder Zweifel da sind?"
       />
+
+      <div className="mb-6">
+        <button
+          type="button"
+          onClick={() => setShowTips((v) => !v)}
+          className="text-sm text-ink-soft hover:text-ink transition-colors flex items-center gap-2"
+        >
+          <span className="text-ink-faint tracking-wider">▸</span>
+          Was ist ACT-Defusion? — Wie diese Übung funktioniert
+        </button>
+        {showTips && (
+          <div className="mt-4 p-5 bg-paper-2 border border-line-soft rounded-sm space-y-4">
+            <div>
+              <div className="text-xs tracking-[0.12em] uppercase text-ocean mb-2">Das Prinzip</div>
+              <p className="text-ink-soft text-sm leading-relaxed">
+                ACT (Acceptance and Commitment Therapy) geht nicht darum, kritische Gedanken zu bekämpfen
+                oder zu widerlegen — sondern sie als das zu sehen, was sie sind: Gedanken, keine Wahrheiten.
+                Defusion bedeutet, Abstand zum Gedanken zu schaffen, ohne ihn zu verdrängen.
+              </p>
+            </div>
+            <div>
+              <div className="text-xs tracking-[0.12em] uppercase text-ocean mb-2">Defusions-Beispiele</div>
+              <ul className="space-y-1">
+                {DEFUSION_EXAMPLES.map((ex, i) => (
+                  <li key={i} className="text-ink-soft text-sm flex gap-2">
+                    <span className="text-ink-faint flex-shrink-0">·</span>
+                    <span className="italic">{ex}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <div className="text-xs tracking-[0.12em] uppercase text-ocean mb-2">Verpflichtung formulieren</div>
+              <p className="text-ink-soft text-sm leading-relaxed">
+                Eine Verpflichtung ist kein Versprechen an ein perfektes Selbst — sie ist eine Aussage
+                über deine Richtung. Sie beginnt oft mit: <span className="italic">„Ich bin bereit, … auch wenn …"</span>
+                oder <span className="italic">„Ich verpflichte mich zu …, weil mir … wichtig ist."</span>
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
 
       {valueOptions.length === 0 && (
         <p className="text-ink-faint italic mb-6">

@@ -1,18 +1,47 @@
-/**
- * Starter list of values. The actual content reference lives in
- * `reference/kompass.html`; expand/replace from there when porting.
- */
 export const VALUE_SUGGESTIONS: { id: string; label: string }[] = [
   { id: "autonomy", label: "Autonomie" },
   { id: "authenticity", label: "Authentizität" },
   { id: "care", label: "Fürsorge" },
+  { id: "connection", label: "Verbundenheit" },
   { id: "courage", label: "Mut" },
   { id: "craft", label: "Handwerk" },
+  { id: "creativity", label: "Kreativität" },
   { id: "curiosity", label: "Neugier" },
   { id: "depth", label: "Tiefe" },
+  { id: "fairness", label: "Gerechtigkeit" },
+  { id: "family", label: "Familie" },
   { id: "freedom", label: "Freiheit" },
+  { id: "gratitude", label: "Dankbarkeit" },
+  { id: "health", label: "Gesundheit" },
   { id: "honesty", label: "Ehrlichkeit" },
+  { id: "humor", label: "Humor" },
+  { id: "independence", label: "Unabhängigkeit" },
+  { id: "integrity", label: "Integrität" },
+  { id: "kindness", label: "Freundlichkeit" },
+  { id: "learning", label: "Lernen" },
+  { id: "love", label: "Liebe" },
+  { id: "meaning", label: "Sinn" },
+  { id: "nature", label: "Natur" },
+  { id: "openness", label: "Offenheit" },
   { id: "presence", label: "Präsenz" },
+  { id: "reliability", label: "Verlässlichkeit" },
+  { id: "respect", label: "Respekt" },
+  { id: "responsibility", label: "Verantwortung" },
   { id: "rest", label: "Ruhe" },
+  { id: "security", label: "Sicherheit" },
+  { id: "service", label: "Dienst an anderen" },
+  { id: "simplicity", label: "Einfachheit" },
+  { id: "spirituality", label: "Spiritualität" },
   { id: "growth", label: "Wachstum" },
+];
+
+export const VALUE_PROMPTS: string[] = [
+  "Wann hast du zuletzt das Gefühl gehabt, ganz du selbst zu sein? Was hast du in diesem Moment gelebt?",
+  "Was macht dich wütend oder traurig, wenn es verletzt wird? Dahinter steckt oft ein tiefer Wert.",
+  "Beschreibe einen Menschen, den du bewunderst. Welche Qualitäten ziehen dich an — und was sagt das über dich?",
+  "Wenn du nur einen einzigen Wert in deinem Leben verkörpern könntest, welcher wäre es?",
+  "Wofür schämst du dich nie, Zeit oder Energie aufzuwenden?",
+  "Was würdest du anders machen, wenn du wüsstest, dass niemand urteilt?",
+  "In welchen Momenten fühlst du dich am lebendigsten — was tust du dann?",
+  "Wenn jemand, der dich gut kennt, deinen tiefsten Wert benennen sollte — was würde er oder sie sagen?",
 ];
