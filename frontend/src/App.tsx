@@ -1,7 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { api } from "./api";
 import { localApi } from "./api.local";
+import { CrisisBanner } from "./components/CrisisBanner";
 import { runMigrations } from "./lib/migrations";
+import { PHQ9_SUICIDE_ITEM_INDEX } from "./modules/checkin/constants";
+import type { CheckinData } from "./modules/checkin/types";
 import { getModule, modules } from "./modules/registry";
 
 const isLocal = import.meta.env.VITE_STORAGE === "local";
@@ -87,9 +90,17 @@ export default function App() {
     [],
   );
 
+  const [helpOpen, setHelpOpen] = useState(false);
+
   const active = getModule(activeId);
   const state = store[activeId];
   const allData = Object.fromEntries(modules.map((m) => [m.id, store[m.id]?.data]));
+
+  const checkinData = allData?.checkin as CheckinData | undefined;
+  const latestEntry = checkinData?.entries?.[0];
+  const crisisDetected = Boolean(
+    latestEntry && (latestEntry.phq9?.[PHQ9_SUICIDE_ITEM_INDEX] ?? 0) > 0,
+  );
 
   return (
     <div className="min-h-screen flex">
@@ -115,8 +126,21 @@ export default function App() {
           ))}
         </nav>
 
-        {isLocal && (
-          <div className="mt-auto pt-8 border-t border-line-soft space-y-2">
+        <div className="mt-auto pt-8 border-t border-line-soft space-y-2">
+          <button
+            type="button"
+            onClick={() => setHelpOpen((v) => !v)}
+            className={`w-full text-left px-3 py-2 text-sm rounded-sm transition-colors ${
+              crisisDetected
+                ? "text-accent hover:bg-paper-3 font-medium"
+                : "text-ink-faint hover:bg-paper-3 hover:text-ink-soft"
+            }`}
+          >
+            {crisisDetected ? "⚠ Hilfe in der Krise" : "Hilfe in der Krise"}
+          </button>
+
+          {isLocal && (
+            <>
             <button
               type="button"
               onClick={exportJSON}
@@ -145,11 +169,17 @@ export default function App() {
                 e.target.value = "";
               }}
             />
-          </div>
-        )}
+            </>
+          )}
+        </div>
       </aside>
 
       <main className="flex-1 bg-paper">
+        {(helpOpen || crisisDetected) && (
+          <div className="max-w-3xl mx-auto px-6 pt-6">
+            <CrisisBanner />
+          </div>
+        )}
         {active?.Component && state?.loaded ? (
           <active.Component
             data={state.data}

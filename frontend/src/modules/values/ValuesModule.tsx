@@ -40,7 +40,7 @@ export function ValuesModule({ data, onChange, allData }: ModuleProps<ValuesData
         intentions: data.intentions.filter((i) => i.value_id !== id),
       });
     } else {
-      const item: ValueItem = { id, label, weight: 0, note: "" };
+      const item: ValueItem = { id, label, weight: 0, living: 0, note: "" };
       onChange({ ...data, selected: [...data.selected, item] });
     }
   }
@@ -48,7 +48,7 @@ export function ValuesModule({ data, onChange, allData }: ModuleProps<ValuesData
   function addCustom() {
     const label = draft.trim();
     if (!label) return;
-    const item: ValueItem = { id: `custom-${uid()}`, label, weight: 0, note: "" };
+    const item: ValueItem = { id: `custom-${uid()}`, label, weight: 0, living: 0, note: "" };
     onChange({ ...data, selected: [...data.selected, item] });
     setDraft("");
   }
@@ -97,7 +97,7 @@ export function ValuesModule({ data, onChange, allData }: ModuleProps<ValuesData
           <div className="flex flex-wrap gap-2 mb-4">
             {orientationSuggestions.map((s) => (
               <Chip key={s.id} tone="sage" onClick={() => {
-                const item: ValueItem = { id: s.id, label: s.label, weight: s.weight, note: "" };
+                const item: ValueItem = { id: s.id, label: s.label, weight: s.weight, living: 0, note: "" };
                 onChange({ ...data, selected: [...data.selected, item] });
               }}>
                 {s.label}
@@ -108,7 +108,7 @@ export function ValuesModule({ data, onChange, allData }: ModuleProps<ValuesData
             type="button"
             onClick={() => {
               const toAdd: ValueItem[] = orientationSuggestions.map((s) => ({
-                id: s.id, label: s.label, weight: s.weight, note: "",
+                id: s.id, label: s.label, weight: s.weight, living: 0, note: "",
               }));
               onChange({ ...data, selected: [...data.selected, ...toAdd] });
             }}
@@ -155,36 +155,59 @@ export function ValuesModule({ data, onChange, allData }: ModuleProps<ValuesData
 
       {data.selected.length > 0 ? (
         <Card className="mb-6">
-          <h2 className="display text-xl mb-4">Gewählt · Gewichtung</h2>
+          <h2 className="display text-xl mb-2">Wichtig vs. Gelebt</h2>
+          <p className="text-ink-soft text-sm mb-4 leading-relaxed">
+            Für jeden Wert: <span className="text-accent">wichtig</span> (wie bedeutsam ist er dir?)
+            und <span className="text-sage">gelebt</span> (wie stark lebst du ihn aktuell?). Große
+            Lücken zeigen, wo du ansetzen kannst.
+          </p>
           <ul className="divide-y divide-line-soft">
-            {data.selected.map((v) => (
-              <li key={v.id} className="py-4 flex items-start gap-4">
-                <div className="flex-1">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="font-medium text-ink">{v.label}</span>
+            {data.selected.map((v) => {
+              const gap = v.weight - v.living;
+              return (
+                <li key={v.id} className="py-4">
+                  <div className="flex items-center justify-between mb-3 gap-4">
+                    <span className="font-medium text-ink flex-1">{v.label}</span>
+                    {gap >= 2 && (
+                      <span className="text-xs text-accent border border-accent px-2 py-0.5 rounded-full flex-shrink-0">
+                        Lücke {gap}
+                      </span>
+                    )}
+                    <button
+                      type="button"
+                      onClick={() => toggleSuggestion(v.id, v.label)}
+                      className="text-ink-faint hover:text-accent text-xs flex-shrink-0"
+                      aria-label={`${v.label} entfernen`}
+                    >
+                      Entfernen
+                    </button>
+                  </div>
+                  <div className="grid grid-cols-[80px_1fr] gap-3 items-center mb-2">
+                    <span className="text-xs text-accent tracking-wider uppercase">wichtig</span>
                     <RatingDots
                       value={v.weight}
                       onChange={(w) => updateItem(v.id, { weight: w })}
+                      label={`${v.label} Wichtigkeit`}
+                    />
+                  </div>
+                  <div className="grid grid-cols-[80px_1fr] gap-3 items-center mb-3">
+                    <span className="text-xs text-sage tracking-wider uppercase">gelebt</span>
+                    <RatingDots
+                      value={v.living}
+                      onChange={(l) => updateItem(v.id, { living: l })}
+                      label={`${v.label} gelebt`}
                     />
                   </div>
                   <textarea
                     value={v.note}
                     onChange={(e) => updateItem(v.id, { note: e.target.value })}
-                    placeholder="Was bedeutet dir dieser Wert?"
-                    rows={2}
-                    className="w-full bg-paper border border-line-soft px-3 py-2 rounded-sm text-ink-soft placeholder:text-ink-faint focus:outline-none focus:border-ink-soft resize-none"
+                    placeholder="Notiz (optional)"
+                    rows={1}
+                    className="w-full bg-paper border border-line-soft px-3 py-2 rounded-sm text-ink-soft placeholder:text-ink-faint focus:outline-none focus:border-ink-soft resize-none text-sm"
                   />
-                </div>
-                <button
-                  type="button"
-                  onClick={() => toggleSuggestion(v.id, v.label)}
-                  className="text-ink-faint hover:text-accent text-sm"
-                  aria-label={`${v.label} entfernen`}
-                >
-                  Entfernen
-                </button>
-              </li>
-            ))}
+                </li>
+              );
+            })}
           </ul>
         </Card>
       ) : null}

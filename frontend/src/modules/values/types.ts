@@ -2,6 +2,7 @@ export interface ValueItem {
   id: string;
   label: string;
   weight: number;
+  living: number;
   note: string;
 }
 

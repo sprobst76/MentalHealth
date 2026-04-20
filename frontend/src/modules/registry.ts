@@ -2,6 +2,7 @@ import type { FC } from "react";
 import type { AllData } from "../types";
 import { beliefsActModule } from "./beliefs_act";
 import { beliefsSchemaModule } from "./beliefs_schema";
+import { checkinModule } from "./checkin";
 import { goalsModule } from "./goals";
 import { obstaclesModule } from "./obstacles";
 import { orientationModule } from "./orientation";
@@ -33,6 +34,7 @@ export interface ModuleDef<T = any> {
 }
 
 export const modules: ModuleDef[] = [
+  checkinModule,
   orientationModule,
   valuesModule,
   beliefsSchemaModule,

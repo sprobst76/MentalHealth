@@ -5,12 +5,8 @@ import { RatingDots } from "../../components/RatingDots";
 import type { OrientationData } from "../orientation/types";
 import { calcProfile } from "../orientation/scoring";
 import type { ModuleProps } from "../registry";
-import { SCHEMA_MAP, SCHEMAS } from "./constants";
+import { SCHEMAS } from "./constants";
 import type { BeliefEntry, BeliefsSchemaData } from "./types";
-
-function uid() {
-  return Math.random().toString(36).slice(2, 10);
-}
 
 export function BeliefsSchemaModule({ data, onChange, allData }: ModuleProps<BeliefsSchemaData>) {
   const [expandedId, setExpandedId] = useState<string | null>(null);
@@ -38,7 +34,6 @@ export function BeliefsSchemaModule({ data, onChange, allData }: ModuleProps<Bel
       });
     } else {
       const fresh: BeliefEntry = {
-        schema_id: patch.schema_id,
         active: true,
         intensity: 3,
         personal_text: "",

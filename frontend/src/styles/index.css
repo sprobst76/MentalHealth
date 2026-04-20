@@ -48,3 +48,23 @@ h3,
   background: var(--accent-soft);
   color: var(--paper);
 }
+
+@media print {
+  aside {
+    display: none !important;
+  }
+  main {
+    background: white !important;
+  }
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  .bg-paper-2,
+  .bg-paper-3 {
+    background: white !important;
+  }
+  button {
+    display: none !important;
+  }
+}
