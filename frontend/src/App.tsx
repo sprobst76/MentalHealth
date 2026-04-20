@@ -1,7 +1,35 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { api } from "./api";
+import { localApi } from "./api.local";
 import { runMigrations } from "./lib/migrations";
 import { getModule, modules } from "./modules/registry";
+
+const isLocal = import.meta.env.VITE_STORAGE === "local";
+
+function exportJSON() {
+  const data = localApi.exportAll();
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `kompass-${new Date().toISOString().slice(0, 10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function importJSON(file: File, onDone: () => void) {
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const dump = JSON.parse(e.target?.result as string);
+      localApi.importAll(dump);
+      onDone();
+    } catch {
+      alert("Datei konnte nicht gelesen werden.");
+    }
+  };
+  reader.readAsText(file);
+}
 
 interface ModuleState {
   data: any;
@@ -20,6 +48,8 @@ function emptyStore(): Store {
 export default function App() {
   const [activeId, setActiveId] = useState(modules[0]?.id ?? "");
   const [store, setStore] = useState<Store>(() => emptyStore());
+  const [importKey, setImportKey] = useState(0);
+  const fileRef = useRef<HTMLInputElement>(null);
 
   const loadModule = useCallback(async (id: string) => {
     const mod = getModule(id);
@@ -41,7 +71,7 @@ export default function App() {
 
   useEffect(() => {
     if (activeId) void loadModule(activeId);
-  }, [activeId, loadModule]);
+  }, [activeId, loadModule, importKey]);
 
   const handleChange = useCallback(
     (id: string) => (next: any) => {
@@ -58,7 +88,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex">
-      <aside className="w-64 border-r border-line-soft bg-paper-2 p-6">
+      <aside className="w-64 border-r border-line-soft bg-paper-2 p-6 flex flex-col">
         <div className="display text-2xl text-ink mb-8">Kompass</div>
         <nav className="space-y-1">
           {modules.map((m) => (
@@ -79,6 +109,39 @@ export default function App() {
             </button>
           ))}
         </nav>
+
+        {isLocal && (
+          <div className="mt-auto pt-8 border-t border-line-soft space-y-2">
+            <button
+              type="button"
+              onClick={exportJSON}
+              className="w-full text-left px-3 py-2 text-sm text-ink-soft hover:bg-paper-3 rounded-sm transition-colors"
+            >
+              Daten exportieren
+            </button>
+            <button
+              type="button"
+              onClick={() => fileRef.current?.click()}
+              className="w-full text-left px-3 py-2 text-sm text-ink-soft hover:bg-paper-3 rounded-sm transition-colors"
+            >
+              Daten importieren
+            </button>
+            <input
+              ref={fileRef}
+              type="file"
+              accept=".json"
+              className="hidden"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) importJSON(file, () => {
+                  setStore(emptyStore());
+                  setImportKey((k) => k + 1);
+                });
+                e.target.value = "";
+              }}
+            />
+          </div>
+        )}
       </aside>
 
       <main className="flex-1 bg-paper">
