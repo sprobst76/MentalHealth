@@ -1,7 +1,9 @@
+import { localApi } from "./api.local";
 import type { ModuleRecord, ModuleSpecWire } from "./types";
 
 const BASE = (import.meta.env.VITE_API_BASE ?? "http://localhost:8000").replace(/\/$/, "");
 const TOKEN = import.meta.env.VITE_KOMPASS_TOKEN ?? "";
+const USE_LOCAL = import.meta.env.VITE_STORAGE === "local";
 
 function headers(extra?: HeadersInit): HeadersInit {
   const h: Record<string, string> = { "Content-Type": "application/json" };
@@ -18,7 +20,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   return res.json() as Promise<T>;
 }
 
-export const api = {
+const serverApi = {
   listModules: () => request<ModuleSpecWire[]>("/api/modules"),
   getModule: <T>(id: string) => request<ModuleRecord<T>>(`/api/modules/${id}`),
   putModule: <T>(id: string, data: T) =>
@@ -28,3 +30,5 @@ export const api = {
     }),
   health: () => request<{ status: string }>("/health"),
 };
+
+export const api = USE_LOCAL ? localApi : serverApi;
