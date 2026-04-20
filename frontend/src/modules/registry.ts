@@ -1,11 +1,13 @@
 import type { FC } from "react";
 import type { AllData } from "../types";
+import { beliefsSchemaModule } from "./beliefs_schema";
 import { orientationModule } from "./orientation";
 import { valuesModule } from "./values";
 
 export interface ModuleProps<T> {
   data: T;
   onChange: (next: T) => void;
+  allData: AllData;
 }
 
 export interface SummaryProps<T> {
@@ -26,7 +28,7 @@ export interface ModuleDef<T = any> {
   school?: string;
 }
 
-export const modules: ModuleDef[] = [orientationModule, valuesModule];
+export const modules: ModuleDef[] = [orientationModule, valuesModule, beliefsSchemaModule];
 
 export function getModule(id: string): ModuleDef | undefined {
   return modules.find((m) => m.id === id);

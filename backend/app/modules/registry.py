@@ -41,9 +41,9 @@ class ModuleSpec:
 
 
 def _build_modules() -> list[ModuleSpec]:
-    from . import orientation, values  # late import — each module file defines one SPEC
+    from . import beliefs_schema, orientation, values
 
-    specs = [orientation.SPEC, values.SPEC]
+    specs = [orientation.SPEC, values.SPEC, beliefs_schema.SPEC]
     specs.sort(key=lambda s: s.order)
     return specs
 

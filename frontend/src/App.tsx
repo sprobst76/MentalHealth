@@ -85,6 +85,7 @@ export default function App() {
 
   const active = getModule(activeId);
   const state = store[activeId];
+  const allData = Object.fromEntries(modules.map((m) => [m.id, store[m.id]?.data]));
 
   return (
     <div className="min-h-screen flex">
@@ -149,6 +150,7 @@ export default function App() {
           <active.Component
             data={state.data}
             onChange={handleChange(active.id)}
+            allData={allData}
           />
         ) : (
           <div className="p-12 text-ink-faint">Lade…</div>

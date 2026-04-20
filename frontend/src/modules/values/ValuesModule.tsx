@@ -3,6 +3,8 @@ import { Card } from "../../components/Card";
 import { Chip } from "../../components/Chip";
 import { PhaseHeader } from "../../components/PhaseHeader";
 import { RatingDots } from "../../components/RatingDots";
+import type { OrientationData } from "../orientation/types";
+import { calcProfile } from "../orientation/scoring";
 import type { ModuleProps } from "../registry";
 import { VALUE_SUGGESTIONS } from "./constants";
 import type { ValueItem, ValuesData } from "./types";
@@ -11,8 +13,18 @@ function uid(): string {
   return Math.random().toString(36).slice(2, 10);
 }
 
-export function ValuesModule({ data, onChange }: ModuleProps<ValuesData>) {
+export function ValuesModule({ data, onChange, allData }: ModuleProps<ValuesData>) {
   const [draft, setDraft] = useState("");
+
+  const orientationSuggestions = useMemo(() => {
+    const od = allData?.orientation as OrientationData | undefined;
+    if (!od?.responses?.length) return [];
+    const profile = calcProfile(od.responses);
+    const existing = new Set(data.selected.map((v) => v.id));
+    return profile.topValues
+      .filter((v) => !existing.has(v.id))
+      .map((v) => ({ id: v.id, label: v.label, weight: Math.round(v.score * 5) }));
+  }, [allData, data.selected]);
 
   const selectedIds = useMemo(
     () => new Set(data.selected.map((v) => v.id)),
@@ -54,6 +66,36 @@ export function ValuesModule({ data, onChange }: ModuleProps<ValuesData>) {
         title="Werte"
         subtitle="Was ist dir in deinem Leben wichtig? Wähle aus — oder ergänze, was fehlt. Gewichte später."
       />
+
+      {orientationSuggestions.length > 0 && (
+        <div className="mb-6 p-5 border border-sage rounded-sm bg-paper-2">
+          <div className="text-xs tracking-[0.15em] uppercase text-sage mb-3">
+            Aus deiner Orientierung abgeleitet
+          </div>
+          <div className="flex flex-wrap gap-2 mb-4">
+            {orientationSuggestions.map((s) => (
+              <Chip key={s.id} tone="sage" onClick={() => {
+                const item: ValueItem = { id: s.id, label: s.label, weight: s.weight, note: "" };
+                onChange({ ...data, selected: [...data.selected, item] });
+              }}>
+                {s.label}
+              </Chip>
+            ))}
+          </div>
+          <button
+            type="button"
+            onClick={() => {
+              const toAdd: ValueItem[] = orientationSuggestions.map((s) => ({
+                id: s.id, label: s.label, weight: s.weight, note: "",
+              }));
+              onChange({ ...data, selected: [...data.selected, ...toAdd] });
+            }}
+            className="text-sm text-sage hover:text-ink transition-colors"
+          >
+            Alle übernehmen
+          </button>
+        </div>
+      )}
 
       <Card className="mb-6">
         <h2 className="display text-xl mb-4">Vorschläge</h2>
