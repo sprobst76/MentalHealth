@@ -1,0 +1,140 @@
+import { useMemo, useState } from "react";
+import { Card } from "../../components/Card";
+import { Chip } from "../../components/Chip";
+import { PhaseHeader } from "../../components/PhaseHeader";
+import { RatingDots } from "../../components/RatingDots";
+import type { ModuleProps } from "../registry";
+import { VALUE_SUGGESTIONS } from "./constants";
+import type { ValueItem, ValuesData } from "./types";
+
+function uid(): string {
+  return Math.random().toString(36).slice(2, 10);
+}
+
+export function ValuesModule({ data, onChange }: ModuleProps<ValuesData>) {
+  const [draft, setDraft] = useState("");
+
+  const selectedIds = useMemo(
+    () => new Set(data.selected.map((v) => v.id)),
+    [data.selected],
+  );
+
+  function toggleSuggestion(id: string, label: string) {
+    if (selectedIds.has(id)) {
+      onChange({
+        ...data,
+        selected: data.selected.filter((v) => v.id !== id),
+        intentions: data.intentions.filter((i) => i.value_id !== id),
+      });
+    } else {
+      const item: ValueItem = { id, label, weight: 0, note: "" };
+      onChange({ ...data, selected: [...data.selected, item] });
+    }
+  }
+
+  function addCustom() {
+    const label = draft.trim();
+    if (!label) return;
+    const item: ValueItem = { id: `custom-${uid()}`, label, weight: 0, note: "" };
+    onChange({ ...data, selected: [...data.selected, item] });
+    setDraft("");
+  }
+
+  function updateItem(id: string, patch: Partial<ValueItem>) {
+    onChange({
+      ...data,
+      selected: data.selected.map((v) => (v.id === id ? { ...v, ...patch } : v)),
+    });
+  }
+
+  return (
+    <div className="max-w-3xl mx-auto px-6 py-12">
+      <PhaseHeader
+        phaseNum="01"
+        title="Werte"
+        subtitle="Was ist dir in deinem Leben wichtig? Wähle aus — oder ergänze, was fehlt. Gewichte später."
+      />
+
+      <Card className="mb-6">
+        <h2 className="display text-xl mb-4">Vorschläge</h2>
+        <div className="flex flex-wrap gap-2">
+          {VALUE_SUGGESTIONS.map((s) => (
+            <Chip
+              key={s.id}
+              active={selectedIds.has(s.id)}
+              onClick={() => toggleSuggestion(s.id, s.label)}
+            >
+              {s.label}
+            </Chip>
+          ))}
+        </div>
+
+        <div className="flex gap-2 mt-5">
+          <input
+            value={draft}
+            onChange={(e) => setDraft(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") addCustom();
+            }}
+            placeholder="Eigener Wert…"
+            className="flex-1 bg-paper border border-line px-3 py-2 rounded-sm text-ink placeholder:text-ink-faint focus:outline-none focus:border-ink-soft"
+          />
+          <button
+            type="button"
+            onClick={addCustom}
+            className="px-4 py-2 bg-ink text-paper rounded-sm hover:bg-accent transition-colors"
+          >
+            Hinzufügen
+          </button>
+        </div>
+      </Card>
+
+      {data.selected.length > 0 ? (
+        <Card className="mb-6">
+          <h2 className="display text-xl mb-4">Gewählt · Gewichtung</h2>
+          <ul className="divide-y divide-line-soft">
+            {data.selected.map((v) => (
+              <li key={v.id} className="py-4 flex items-start gap-4">
+                <div className="flex-1">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="font-medium text-ink">{v.label}</span>
+                    <RatingDots
+                      value={v.weight}
+                      onChange={(w) => updateItem(v.id, { weight: w })}
+                    />
+                  </div>
+                  <textarea
+                    value={v.note}
+                    onChange={(e) => updateItem(v.id, { note: e.target.value })}
+                    placeholder="Was bedeutet dir dieser Wert?"
+                    rows={2}
+                    className="w-full bg-paper border border-line-soft px-3 py-2 rounded-sm text-ink-soft placeholder:text-ink-faint focus:outline-none focus:border-ink-soft resize-none"
+                  />
+                </div>
+                <button
+                  type="button"
+                  onClick={() => toggleSuggestion(v.id, v.label)}
+                  className="text-ink-faint hover:text-accent text-sm"
+                  aria-label={`${v.label} entfernen`}
+                >
+                  Entfernen
+                </button>
+              </li>
+            ))}
+          </ul>
+        </Card>
+      ) : null}
+
+      <Card>
+        <h2 className="display text-xl mb-4">Reflexion</h2>
+        <textarea
+          value={data.reflection}
+          onChange={(e) => onChange({ ...data, reflection: e.target.value })}
+          rows={6}
+          placeholder="Wo spürst du Reibung zwischen diesen Werten und dem, was du gerade lebst?"
+          className="w-full bg-paper border border-line px-3 py-3 rounded-sm text-ink placeholder:text-ink-faint focus:outline-none focus:border-ink-soft resize-y"
+        />
+      </Card>
+    </div>
+  );
+}
