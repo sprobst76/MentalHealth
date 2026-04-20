@@ -54,6 +54,10 @@ export default function App() {
   const loadModule = useCallback(async (id: string) => {
     const mod = getModule(id);
     if (!mod) return;
+    if (mod.kind === "special") {
+      setStore((s) => ({ ...s, [id]: { data: mod.defaultData(), loaded: true, error: null } }));
+      return;
+    }
     try {
       const record = await api.getModule<any>(id);
       const data =
