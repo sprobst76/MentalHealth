@@ -1,0 +1,32 @@
+import type { FC } from "react";
+import type { AllData } from "../types";
+import { valuesModule } from "./values";
+
+export interface ModuleProps<T> {
+  data: T;
+  onChange: (next: T) => void;
+}
+
+export interface SummaryProps<T> {
+  data: T;
+  allData: AllData;
+}
+
+export interface ModuleDef<T = any> {
+  id: string;
+  title: string;
+  phaseNum: string;
+  kind: "data" | "special";
+  schemaVersion: number;
+  defaultData: () => T;
+  migrations: Record<number, (data: any) => any>;
+  Component?: FC<ModuleProps<T>>;
+  SummaryBlock?: FC<SummaryProps<T>>;
+  school?: string;
+}
+
+export const modules: ModuleDef[] = [valuesModule];
+
+export function getModule(id: string): ModuleDef | undefined {
+  return modules.find((m) => m.id === id);
+}
