@@ -1,6 +1,6 @@
 # Kompass — Project State
 
-**Last updated:** 2026-04-21T12:00Z
+**Last updated:** 2026-04-21T12:05Z
 
 ---
 
@@ -20,18 +20,18 @@
 ## Current Position
 
 **Current phase:** 2 — Content Gaps
-**Current plan:** — (ready to execute)
-**Status:** Phase 2 planned — 8 plans in 5 waves, ready to execute
+**Current plan:** 02 (next to execute)
+**Status:** Phase 2 in progress — plan 02-01 complete (1/8)
 
 **Progress bar:**
 ```
 Phase 1 [==========] 100% (all 4 plans complete)
-Phase 2 [          ] 0% (8 plans ready)
+Phase 2 [=         ] 12% (1/8 plans complete)
 Phase 3 [          ] 0%
 Phase 4 [          ] 0%
 ```
 
-**Requirements covered:** 8 / 24 (QUAL-01, QUAL-02, QUAL-03, QUAL-04, QUAL-05, DEPS-01, DEPS-02, DEPS-03)
+**Requirements covered:** 9 / 24 (QUAL-01, QUAL-02, QUAL-03, QUAL-04, QUAL-05, DEPS-01, DEPS-02, DEPS-03, CONT-06)
 
 ---
 
@@ -74,8 +74,8 @@ To resume work in a new session:
 2. Read ROADMAP.md for phase overview
 3. Run `/gsd-execute-phase 2` to begin Phase 2 (Content Gaps), or `/gsd-plan-phase 2` if Phase 2 plans are not yet created
 
-**Last session:** 2026-04-21 — Phase 2 planned (8 plans, 5 waves). Research, pattern mapping, and verification all passed. Plan 02-08 gated on reference/kompass.html.
-**Stopped at:** Ready to execute Phase 2.
+**Last session:** 2026-04-21 — Phase 2 plan 02-01 executed. GOAL_PROMPTS, DEFUSION_EXAMPLES, EXPLORATION_PROMPTS extracted to constants.ts files (CONT-06).
+**Stopped at:** Phase 2 plan 02-02 (next to execute).
 
 ---
 

@@ -50,7 +50,7 @@ Plans:
 **UI hint**: yes
 
 Plans:
-- [ ] 02-01-PLAN.md — Constants extraction: GOAL_PROMPTS, DEFUSION_EXAMPLES, EXPLORATION_PROMPTS (CONT-06)
+- [x] 02-01-PLAN.md — Constants extraction: GOAL_PROMPTS, DEFUSION_EXAMPLES, EXPLORATION_PROMPTS (CONT-06)
 - [ ] 02-02-PLAN.md — Backend test stubs: checkin + ysq integration tests (Wave 0 gap)
 - [ ] 02-03-PLAN.md — Checkin backend module + registry registration (CONT-01)
 - [ ] 02-04-PLAN.md — YSQ backend module + registry registration (CONT-02)
@@ -89,7 +89,7 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Correctness & Build | 4/4 | Complete | 2026-04-21 |
-| 2. Content Gaps | 0/8 | Not started | - |
+| 2. Content Gaps | 1/8 | In progress | - |
 | 3. Data Portability | 0/? | Not started | - |
 | 4. Snapshot System | 0/? | Not started | - |
 
