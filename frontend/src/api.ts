@@ -3,7 +3,11 @@ import type { ModuleRecord, ModuleSpecWire } from "./types";
 
 const BASE = (import.meta.env.VITE_API_BASE ?? "http://localhost:8000").replace(/\/$/, "");
 const TOKEN = import.meta.env.VITE_KOMPASS_TOKEN ?? "";
-const USE_LOCAL = import.meta.env.VITE_STORAGE === "local";
+
+// Use local storage when explicitly set OR when running as a static file (no server)
+const USE_LOCAL =
+  import.meta.env.VITE_STORAGE === "local" ||
+  (typeof window !== "undefined" && window.location.protocol === "file:");
 
 function headers(extra?: HeadersInit): HeadersInit {
   const h: Record<string, string> = { "Content-Type": "application/json" };

@@ -30,9 +30,7 @@ jobs:
 
       - name: Build single-file HTML
         working-directory: frontend
-        env:
-          VITE_STORAGE: local
-        run: npx vite build --outDir dist-local
+        run: VITE_STORAGE=local npx vite build --outDir dist-local
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
