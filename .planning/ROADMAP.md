@@ -27,8 +27,14 @@
   3. All generated IDs (beliefs, goals, obstacles, checkin entries) are valid UUIDs, with a `Math.random` fallback only in `file://` contexts where `crypto.randomUUID` is unavailable
   4. The backend returns the last-known-good data (not HTTP 500) if a migration function throws, and the error is logged with context
   5. The offline HTML build completes without errors under Vite 7 and loads correctly in Chrome and Safari via `file://`
-**Plans**: TBD
+**Plans**: 4 plans
 **UI hint**: yes
+
+Plans:
+- [ ] 01-01-PLAN.md — Backend test infrastructure (Wave 0 gaps: conftest, test_config, test_modules)
+- [ ] 01-02-PLAN.md — Backend fixes: QUAL-04 migration error guard, QUAL-05 token validation, DEPS-01 SQLModel pin
+- [ ] 01-03-PLAN.md — Frontend fixes: QUAL-01 localApi migration write-back, QUAL-02 ErrorBoundary, QUAL-03 uid() utility
+- [ ] 01-04-PLAN.md — Dependency upgrade: DEPS-02 vite-plugin-singlefile 2.3.2, DEPS-03 Vite 5→7 + offline build verify
 
 ### Phase 2: Content Gaps
 **Goal**: All existing frontend modules have a corresponding backend module, and the YSQ module is fully usable from questionnaire to results
@@ -72,7 +78,7 @@
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Correctness & Build | 0/? | Not started | - |
+| 1. Correctness & Build | 0/4 | Not started | - |
 | 2. Content Gaps | 0/? | Not started | - |
 | 3. Data Portability | 0/? | Not started | - |
 | 4. Snapshot System | 0/? | Not started | - |
@@ -80,3 +86,4 @@
 ---
 
 *Roadmap created: 2026-04-21*
+*Updated: 2026-04-21 — Phase 1 plans created (4 plans, 2 waves)*
