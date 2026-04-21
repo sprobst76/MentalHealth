@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { api } from "./api";
 import { localApi } from "./api.local";
 import { CrisisBanner } from "./components/CrisisBanner";
+import { ErrorBoundary } from "./components/ErrorBoundary";
 import { runMigrations } from "./lib/migrations";
 import { PHQ9_SUICIDE_ITEM_INDEX } from "./modules/checkin/constants";
 import type { CheckinData } from "./modules/checkin/types";
@@ -180,15 +181,17 @@ export default function App() {
             <CrisisBanner />
           </div>
         )}
-        {active?.Component && state?.loaded ? (
-          <active.Component
-            data={state.data}
-            onChange={handleChange(active.id)}
-            allData={allData}
-          />
-        ) : (
-          <div className="p-12 text-ink-faint">Lade…</div>
-        )}
+        <ErrorBoundary key={activeId}>
+          {active?.Component && state?.loaded ? (
+            <active.Component
+              data={state.data}
+              onChange={handleChange(active.id)}
+              allData={allData}
+            />
+          ) : (
+            <div className="p-12 text-ink-faint">Lade…</div>
+          )}
+        </ErrorBoundary>
         {state?.error ? (
           <div className="max-w-3xl mx-auto px-6 pb-6 text-accent text-sm">
             {state.error}

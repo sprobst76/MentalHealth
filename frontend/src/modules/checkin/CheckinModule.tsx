@@ -18,11 +18,8 @@ import {
   phq9Severity,
   sumAnswers,
 } from "./scoring";
+import { uid } from "../../lib/uid";
 import type { CheckinData, CheckinEntry } from "./types";
-
-function uid(): string {
-  return Math.random().toString(36).slice(2, 10);
-}
 
 function emptyAnswers(len: number): number[] {
   return Array.from({ length: len }, () => -1);

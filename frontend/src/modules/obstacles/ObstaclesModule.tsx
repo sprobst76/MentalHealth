@@ -2,15 +2,12 @@ import { useMemo, useState } from "react";
 import { Card } from "../../components/Card";
 import { Chip } from "../../components/Chip";
 import { PhaseHeader } from "../../components/PhaseHeader";
+import { uid } from "../../lib/uid";
 import type { BeliefsSchemaData } from "../beliefs_schema/types";
 import { SCHEMA_MAP } from "../beliefs_schema/constants";
 import type { GoalsData } from "../goals/types";
 import type { ModuleProps } from "../registry";
 import type { Obstacle, ObstaclesData } from "./types";
-
-function uid() {
-  return Math.random().toString(36).slice(2, 10);
-}
 
 const EXPLORATION_PROMPTS = [
   "Wie alt fühlst du dich in diesem Moment, wenn das Hindernis auftaucht?",

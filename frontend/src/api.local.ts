@@ -5,6 +5,7 @@
  * Storage layout:
  *   kompass:module:<id>  →  { schema_version, data, updated_at }
  */
+import { runMigrations } from "./lib/migrations";
 import { modules } from "./modules/registry";
 import type { ModuleRecord, ModuleSpecWire } from "./types";
 
@@ -43,6 +44,19 @@ export const localApi = {
     }
 
     const stored = JSON.parse(raw) as { schema_version: number; data: T; updated_at: string };
+
+    if (stored.schema_version < mod.schemaVersion) {
+      const migrated = runMigrations<T>(
+        stored.data,
+        stored.schema_version,
+        mod.schemaVersion,
+        mod.migrations,
+      );
+      const updated = { schema_version: mod.schemaVersion, data: migrated, updated_at: now() };
+      localStorage.setItem(KEY(id), JSON.stringify(updated));
+      return Promise.resolve({ module_id: id, ...updated });
+    }
+
     return Promise.resolve({
       module_id: id,
       schema_version: stored.schema_version,
