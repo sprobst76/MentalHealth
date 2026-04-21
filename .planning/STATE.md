@@ -1,6 +1,6 @@
 # Kompass — Project State
 
-**Last updated:** 2026-04-21T10:00Z
+**Last updated:** 2026-04-21T11:00Z
 
 ---
 
@@ -19,9 +19,9 @@
 
 ## Current Position
 
-**Current phase:** 1 — Correctness & Build
-**Current plan:** 04 — COMPLETE (Phase 1 complete)
-**Status:** Phase 1 all 4 plans complete — ready for Phase 2
+**Current phase:** 2 — Content Gaps
+**Current plan:** — (no plans yet)
+**Status:** Phase 2 context gathered — BLOCKED on reference/kompass.html before planning
 
 **Progress bar:**
 ```
@@ -37,7 +37,7 @@ Phase 4 [          ] 0%
 
 ## Next Action
 
-Phase 1 complete. Begin Phase 2 (Content Gaps): run `/gsd-execute-phase 2` or `/gsd-plan-phase 2` if Phase 2 plans are not yet created.
+Phase 2 context gathered. **BLOCKER:** `reference/kompass.html` muss auf Disk liegen bevor YSQ-Tasks geplant werden können. Danach: `/gsd-plan-phase 2`.
 
 ---
 
@@ -72,8 +72,8 @@ To resume work in a new session:
 2. Read ROADMAP.md for phase overview
 3. Run `/gsd-execute-phase 2` to begin Phase 2 (Content Gaps), or `/gsd-plan-phase 2` if Phase 2 plans are not yet created
 
-**Last session:** 2026-04-21 — Completed Phase 1 plan 04 (Vite 7 + singlefile pin). Phase 1 fully complete.
-**Stopped at:** Phase 2 not yet started.
+**Last session:** 2026-04-21 — Phase 2 context gathered via gsd-discuss-phase. 4 areas discussed (YSQ-Quelldaten, Schema-Menge, Navigation, Balkendiagramm).
+**Stopped at:** Waiting for reference/kompass.html before planning.
 
 ---
 
