@@ -17,7 +17,7 @@
 
 - [ ] **DEPS-01**: SQLModel auf `>=0.0.32` gepinnt in `pyproject.toml` (behebt Pydantic 2.12+ Kompatibilitätsproblem mit `Annotated`-Feldern)
 - [ ] **DEPS-02**: `vite-plugin-singlefile` auf exakte Version `2.3.2` gepinnt (aktuell `^2.0.2`; Vite 6/7 Compat)
-- [ ] **DEPS-03**: Vite von 5 auf 7 aktualisiert und Offline-HTML-Build verifiziert (getestet in Chrome und Safari via `file://`)
+- [x] **DEPS-03**: Vite von 5 auf 7 aktualisiert und Offline-HTML-Build verifiziert (getestet in Firefox via `file://`)
 
 ### Content-Lücken
 

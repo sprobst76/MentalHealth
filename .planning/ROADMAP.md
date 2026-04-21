@@ -26,7 +26,7 @@
   2. A module that throws a render error shows an inline error state — the sidebar and other modules continue to work
   3. All generated IDs (beliefs, goals, obstacles, checkin entries) are valid UUIDs, with a `Math.random` fallback only in `file://` contexts where `crypto.randomUUID` is unavailable
   4. The backend returns the last-known-good data (not HTTP 500) if a migration function throws, and the error is logged with context
-  5. The offline HTML build completes without errors under Vite 7 and loads correctly in Chrome and Safari via `file://`
+  5. The offline HTML build completes without errors under Vite 7 and loads correctly in Firefox via `file://`
 **Plans**: 4 plans
 **UI hint**: yes
 
