@@ -41,11 +41,12 @@ class ModuleSpec:
 
 
 def _build_modules() -> list[ModuleSpec]:
-    from . import beliefs_act, beliefs_schema, goals, obstacles, orientation, values
+    from . import beliefs_act, beliefs_schema, checkin, goals, obstacles, orientation, values
 
     specs = [
         orientation.SPEC,
         values.SPEC,
+        checkin.SPEC,        # CONT-01
         beliefs_schema.SPEC,
         beliefs_act.SPEC,
         goals.SPEC,
