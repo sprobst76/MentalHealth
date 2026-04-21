@@ -41,7 +41,7 @@ class ModuleSpec:
 
 
 def _build_modules() -> list[ModuleSpec]:
-    from . import beliefs_act, beliefs_schema, checkin, goals, obstacles, orientation, values
+    from . import beliefs_act, beliefs_schema, checkin, goals, obstacles, orientation, values, ysq
 
     specs = [
         orientation.SPEC,
@@ -51,6 +51,7 @@ def _build_modules() -> list[ModuleSpec]:
         beliefs_act.SPEC,
         goals.SPEC,
         obstacles.SPEC,
+        ysq.SPEC,            # CONT-02
     ]
     specs.sort(key=lambda s: s.order)
     return specs
