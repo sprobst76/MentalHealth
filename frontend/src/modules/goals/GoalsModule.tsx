@@ -5,19 +5,11 @@ import { PhaseHeader } from "../../components/PhaseHeader";
 import { uid } from "../../lib/uid";
 import type { ModuleProps } from "../registry";
 import type { ValuesData } from "../values/types";
-import { HORIZON_LABEL, STATUS_LABEL } from "./constants";
+import { HORIZON_LABEL, STATUS_LABEL, GOAL_PROMPTS } from "./constants";
 import type { Goal, GoalsData, GoalStatus, Horizon } from "./types";
 
 const HORIZONS: Horizon[] = ["30days", "quarter", "year", "longer"];
 const STATUSES: GoalStatus[] = ["active", "achieved", "paused"];
-
-const GOAL_PROMPTS = [
-  "Was genau willst du erreichen — so konkret, dass du es beschreiben könntest?",
-  "Woran wirst du erkennen, dass du es erreicht hast?",
-  "Warum ist dieses Ziel wichtig für dich — welchen Wert lebt es?",
-  "Was könnte dich aufhalten? (Das ist Vorbereitung, keine Niederlage.)",
-  "Was wäre dein allererster Schritt — heute oder diese Woche?",
-];
 
 export function GoalsModule({ data, onChange, allData }: ModuleProps<GoalsData>) {
   const [openId, setOpenId] = useState<string | null>(null);

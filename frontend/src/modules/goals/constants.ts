@@ -12,3 +12,11 @@ export const STATUS_LABEL: Record<GoalStatus, string> = {
   achieved: "Erreicht",
   paused: "Pausiert",
 };
+
+export const GOAL_PROMPTS: string[] = [
+  "Was genau willst du erreichen — so konkret, dass du es beschreiben könntest?",
+  "Woran wirst du erkennen, dass du es erreicht hast?",
+  "Warum ist dieses Ziel wichtig für dich — welchen Wert lebt es?",
+  "Was könnte dich aufhalten? (Das ist Vorbereitung, keine Niederlage.)",
+  "Was wäre dein allererster Schritt — heute oder diese Woche?",
+];
