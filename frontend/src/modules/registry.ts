@@ -3,6 +3,7 @@ import type { AllData } from "../types";
 import { beliefsActModule } from "./beliefs_act";
 import { beliefsSchemaModule } from "./beliefs_schema";
 import { checkinModule } from "./checkin";
+import { ysqModule } from "./ysq";
 import { goalsModule } from "./goals";
 import { obstaclesModule } from "./obstacles";
 import { orientationModule } from "./orientation";
@@ -35,6 +36,7 @@ export interface ModuleDef<T = any> {
 
 export const modules: ModuleDef[] = [
   checkinModule,
+  ysqModule, // CONT-03: insert here — both are structured questionnaires
   orientationModule,
   valuesModule,
   beliefsSchemaModule,
