@@ -46,8 +46,18 @@ Plans:
   3. After completing the YSQ, a bar chart shows all 18 schema scores sorted descending, with a free-text note field per schema
   4. The Synthese page shows a YSQ summary block listing the 3 highest-scoring schemas
   5. Hardcoded prompt arrays (goal prompts, exploration prompts, defusion examples) live in `constants.ts` files, not inside component bodies
-**Plans**: TBD
+**Plans**: 8 plans
 **UI hint**: yes
+
+Plans:
+- [ ] 02-01-PLAN.md — Constants extraction: GOAL_PROMPTS, DEFUSION_EXAMPLES, EXPLORATION_PROMPTS (CONT-06)
+- [ ] 02-02-PLAN.md — Backend test stubs: checkin + ysq integration tests (Wave 0 gap)
+- [ ] 02-03-PLAN.md — Checkin backend module + registry registration (CONT-01)
+- [ ] 02-04-PLAN.md — YSQ backend module + registry registration (CONT-02)
+- [ ] 02-05-PLAN.md — YSQ type contracts: types.ts + constants.ts skeleton + index.ts (CONT-03/04/05 infrastructure)
+- [ ] 02-06-PLAN.md — YSQ module component: questionnaire + results bar chart (CONT-03, CONT-04)
+- [ ] 02-07-PLAN.md — YSQ summary block + frontend registry wiring (CONT-05)
+- [ ] 02-08-PLAN.md — YSQ constants population from reference/kompass.html [BLOCKED until file on disk] (CONT-02, CONT-03)
 
 ### Phase 3: Data Portability
 **Goal**: Users can export all their data and import it back — in both local and server mode, with full HTML-v1 compatibility
@@ -79,7 +89,7 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Correctness & Build | 4/4 | Complete | 2026-04-21 |
-| 2. Content Gaps | 0/? | Not started | - |
+| 2. Content Gaps | 0/8 | Not started | - |
 | 3. Data Portability | 0/? | Not started | - |
 | 4. Snapshot System | 0/? | Not started | - |
 
@@ -87,3 +97,4 @@ Plans:
 
 *Roadmap created: 2026-04-21*
 *Updated: 2026-04-21 — Phase 1 plans created (4 plans, 2 waves)*
+*Updated: 2026-04-21 — Phase 2 plans created (8 plans, 5 waves)*
