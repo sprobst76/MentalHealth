@@ -2,14 +2,11 @@ import { useMemo, useState } from "react";
 import { Card } from "../../components/Card";
 import { Chip } from "../../components/Chip";
 import { PhaseHeader } from "../../components/PhaseHeader";
+import { uid } from "../../lib/uid";
 import type { ModuleProps } from "../registry";
 import type { ValuesData } from "../values/types";
 import { HORIZON_LABEL, STATUS_LABEL } from "./constants";
 import type { Goal, GoalsData, GoalStatus, Horizon } from "./types";
-
-function uid() {
-  return Math.random().toString(36).slice(2, 10);
-}
 
 const HORIZONS: Horizon[] = ["30days", "quarter", "year", "longer"];
 const STATUSES: GoalStatus[] = ["active", "achieved", "paused"];

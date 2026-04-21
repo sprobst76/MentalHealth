@@ -2,13 +2,10 @@ import { useMemo, useState } from "react";
 import { Card } from "../../components/Card";
 import { PhaseHeader } from "../../components/PhaseHeader";
 import { RatingDots } from "../../components/RatingDots";
+import { uid } from "../../lib/uid";
 import type { ModuleProps } from "../registry";
 import type { ValuesData } from "../values/types";
 import type { ActCommitment, BeliefsActData } from "./types";
-
-function uid() {
-  return Math.random().toString(36).slice(2, 10);
-}
 
 const DEFUSION_EXAMPLES = [
   "Ich bemerke, dass ich den Gedanken habe, dass …",
