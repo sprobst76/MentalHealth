@@ -8,7 +8,7 @@
 
 ## Phases
 
-- [ ] **Phase 1: Correctness & Build** — Fix active data-loss bugs, harden the app shell, update dependencies
+- [x] **Phase 1: Correctness & Build** — Fix active data-loss bugs, harden the app shell, update dependencies
 - [ ] **Phase 2: Content Gaps** — Checkin backend module + full YSQ module (backend, frontend, results, summary) + extract constants
 - [ ] **Phase 3: Data Portability** — Export/Import backend endpoints + mode-aware wiring in App.tsx
 - [ ] **Phase 4: Snapshot System** — Snapshot API routes + minimal UI (create, list, compare) on Synthese page
@@ -31,10 +31,10 @@
 **UI hint**: yes
 
 Plans:
-- [ ] 01-01-PLAN.md — Backend test infrastructure (Wave 0 gaps: conftest, test_config, test_modules)
-- [ ] 01-02-PLAN.md — Backend fixes: QUAL-04 migration error guard, QUAL-05 token validation, DEPS-01 SQLModel pin
-- [ ] 01-03-PLAN.md — Frontend fixes: QUAL-01 localApi migration write-back, QUAL-02 ErrorBoundary, QUAL-03 uid() utility
-- [ ] 01-04-PLAN.md — Dependency upgrade: DEPS-02 vite-plugin-singlefile 2.3.2, DEPS-03 Vite 5→7 + offline build verify
+- [x] 01-01-PLAN.md — Backend test infrastructure (Wave 0 gaps: conftest, test_config, test_modules)
+- [x] 01-02-PLAN.md — Backend fixes: QUAL-04 migration error guard, QUAL-05 token validation, DEPS-01 SQLModel pin
+- [x] 01-03-PLAN.md — Frontend fixes: QUAL-01 localApi migration write-back, QUAL-02 ErrorBoundary, QUAL-03 uid() utility
+- [x] 01-04-PLAN.md — Dependency upgrade: DEPS-02 vite-plugin-singlefile 2.3.2, DEPS-03 Vite 5→7 + offline build verify
 
 ### Phase 2: Content Gaps
 **Goal**: All existing frontend modules have a corresponding backend module, and the YSQ module is fully usable from questionnaire to results
@@ -78,7 +78,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Correctness & Build | 0/4 | Not started | - |
+| 1. Correctness & Build | 4/4 | Complete | 2026-04-21 |
 | 2. Content Gaps | 0/? | Not started | - |
 | 3. Data Portability | 0/? | Not started | - |
 | 4. Snapshot System | 0/? | Not started | - |
