@@ -5,6 +5,7 @@ validation, defaults, and data migrations; the database only stores a blob.
 """
 from __future__ import annotations
 
+import logging
 from datetime import datetime, timezone
 from uuid import UUID
 
@@ -16,6 +17,8 @@ from ..db import get_session
 from ..models import ModuleRecord
 from ..modules import MODULES, get_module
 from ..schemas import ModuleDataResponse, ModuleSpecResponse
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/modules", tags=["modules"])
 
@@ -57,13 +60,24 @@ def _load_or_default(
 
     data = record.data
     if record.schema_version < spec.schema_version:
-        data = spec.migrate(data, record.schema_version)
-        record.schema_version = spec.schema_version
-        record.data = data
-        record.updated_at = datetime.now(timezone.utc)
-        session.add(record)
-        session.commit()
-        session.refresh(record)
+        try:
+            data = spec.migrate(record.data, record.schema_version)
+            record.schema_version = spec.schema_version
+            record.data = data
+            record.updated_at = datetime.now(timezone.utc)
+            session.add(record)
+            session.commit()
+            session.refresh(record)
+        except Exception as exc:
+            logger.error(
+                "Migration failed for module %r (stored v%d → spec v%d): %s",
+                module_id,
+                record.schema_version,
+                spec.schema_version,
+                exc,
+                exc_info=True,
+            )
+            data = record.data
 
     return ModuleDataResponse(
         module_id=module_id,
