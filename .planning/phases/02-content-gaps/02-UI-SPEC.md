@@ -1,7 +1,8 @@
 ---
 phase: 2
 slug: content-gaps
-status: draft
+status: approved
+reviewed_at: 2026-04-21
 shadcn_initialized: false
 preset: none
 created: 2026-04-21
@@ -63,7 +64,7 @@ component patterns.
 |------|------|--------|-------------|------|-------|
 | Body | 14px (`text-sm`) | 400 | 1.6 (`leading-relaxed`) | Inter Tight | Question text, note input, bar chart schema labels |
 | Meta/Label | 12px (`text-xs`) | 400, tracking `0.15em`, uppercase | 1 | Inter Tight | Section labels, progress counter `"Schema X von 18"`, skip label, score numeric annotation |
-| Subheading | 20px (`text-xl`) | 500 | 1.2 | Fraunces (`.display`) | Schema page title (schema name), results view section heading |
+| Subheading | 20px (`text-xl`) | 500 | 1.2 | Fraunces (`.display`) | Schema page title (schema name), results view section heading, summary block heading |
 | Module heading | 28px (`text-2xl`) | 500 | 1.2 | Fraunces (`.display`) | PhaseHeader title — passed as `title` prop, no change to PhaseHeader component |
 
 Score numbers in the results bar chart: `text-sm font-mono` in `text-ink-faint` to match
@@ -239,8 +240,8 @@ The `YsqSummary` component receives `data: YsqData` and renders:
 - `<p className="text-sm text-ink-faint italic">Noch kein YSQ ausgefüllt.</p>`
 
 **If results exist:**
-- Heading: `<h3 className="display text-base mb-3">Auffälligste Schemata</h3>`
-  (`text-base` = 16px, Fraunces)
+- Heading: `<h3 className="display text-xl mb-3">Auffälligste Schemata</h3>`
+  (`text-xl` = 20px, Fraunces — consolidates into existing "subheading" role)
 - A list of the top 3 schemas by score (skipped schemas excluded), each as:
   ```
   <div className="flex items-center justify-between py-2 border-b border-line-soft last:border-b-0">
@@ -279,6 +280,7 @@ calm, precise, no gamification language.
 | In-progress state (draft exists, not committed) | Banner below PhaseHeader: `"Ausfüllung begonnen — du kannst jederzeit fortsetzen."` in `text-xs text-ink-faint` |
 | Summary empty state | `"Noch kein YSQ ausgefüllt."` |
 | Summary block label | `"Auffälligste Schemata"` |
+| API save error | `"Speichern fehlgeschlagen — Verbindung prüfen und erneut versuchen."` in `text-xs text-ink-faint` below the active card |
 | Disclaimer text | `"Der YSQ-S3 ist ein Selbstauskunftsbogen und kein diagnostisches Instrument. Die Ergebnisse dienen der Selbstreflexion. Bei klinischen Fragen bitte Fachpersonal hinzuziehen."` in `text-xs text-ink-faint leading-relaxed mt-10` |
 
 **Destructive actions in this phase:** None. The questionnaire re-take does not delete
