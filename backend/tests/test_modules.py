@@ -50,3 +50,55 @@ async def test_migration_error_returns_last_known_good(client, auth_headers, tes
     assert get_resp.status_code == 200, (
         f"Expected 200 after migration failure, got {get_resp.status_code}: {get_resp.text}"
     )
+
+
+@pytest.mark.asyncio
+async def test_checkin_roundtrip(client, auth_headers):
+    """CONT-01: checkin PUT/GET round-trip returns correct data shape."""
+    put_resp = await client.put(
+        "/api/modules/checkin",
+        json={"entries": []},
+        headers=auth_headers,
+    )
+    assert put_resp.status_code == 200, f"PUT failed: {put_resp.text}"
+    get_resp = await client.get("/api/modules/checkin", headers=auth_headers)
+    assert get_resp.status_code == 200, f"GET failed: {get_resp.text}"
+    payload = get_resp.json()
+    assert "data" in payload
+    assert "entries" in payload["data"]
+    assert payload["data"]["entries"] == []
+
+
+@pytest.mark.asyncio
+async def test_ysq_roundtrip(client, auth_headers):
+    """CONT-02: ysq PUT/GET round-trip preserves 90-element answers array."""
+    answers = [1] * 90
+    put_resp = await client.put(
+        "/api/modules/ysq",
+        json={"answers": answers, "draft": None, "notes": {}},
+        headers=auth_headers,
+    )
+    assert put_resp.status_code == 200, f"PUT failed: {put_resp.text}"
+    get_resp = await client.get("/api/modules/ysq", headers=auth_headers)
+    assert get_resp.status_code == 200, f"GET failed: {get_resp.text}"
+    payload = get_resp.json()
+    assert payload["data"]["answers"] == answers
+    assert payload["data"]["draft"] is None
+
+
+@pytest.mark.asyncio
+async def test_ysq_null_slots_preserved(client, auth_headers):
+    """CONT-02: null slots in ysq answers array survive round-trip (skipped items)."""
+    # Mix of answered (1–4) and skipped (null) items across 90 slots
+    answers = [1, 2, None, 4, 3] * 18  # 90 items, every 3rd item null
+    put_resp = await client.put(
+        "/api/modules/ysq",
+        json={"answers": answers, "draft": None, "notes": {"0": "Testnotiz"}},
+        headers=auth_headers,
+    )
+    assert put_resp.status_code == 200, f"PUT failed: {put_resp.text}"
+    get_resp = await client.get("/api/modules/ysq", headers=auth_headers)
+    assert get_resp.status_code == 200, f"GET failed: {get_resp.text}"
+    payload = get_resp.json()
+    assert payload["data"]["answers"] == answers, "null slots must survive round-trip"
+    assert payload["data"]["notes"] == {"0": "Testnotiz"}
