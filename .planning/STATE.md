@@ -1,6 +1,6 @@
 # Kompass — Project State
 
-**Last updated:** 2026-04-21
+**Last updated:** 2026-04-21T09:32Z
 
 ---
 
@@ -20,28 +20,24 @@
 ## Current Position
 
 **Current phase:** 1 — Correctness & Build
-**Current plan:** None (planning not yet started)
-**Status:** Context gathered — ready for planning
+**Current plan:** 04 — Vite 7 + singlefile pin (awaiting human checkpoint)
+**Status:** Plan 04 tasks complete — blocked at checkpoint:human-verify
 
 **Progress bar:**
 ```
-Phase 1 [          ] 0%
+Phase 1 [====      ] ~40% (plans 01–04 tasks complete, 04 at checkpoint)
 Phase 2 [          ] 0%
 Phase 3 [          ] 0%
 Phase 4 [          ] 0%
 ```
 
-**Requirements covered:** 0 / 24
+**Requirements covered:** 0 / 24 (DEPS-02, DEPS-03 pending checkpoint approval)
 
 ---
 
 ## Next Action
 
-Run `/gsd-plan-phase 1` to decompose Phase 1 into executable plans.
-
-Phase 1 covers: QUAL-01, QUAL-02, QUAL-03, QUAL-04, QUAL-05, DEPS-01, DEPS-02, DEPS-03
-
-Context file: `.planning/phases/01-correctness-build/01-CONTEXT.md`
+Approve checkpoint for plan 01-04: open `frontend/dist-local/index.html` in Chrome via file:// and confirm the app renders. Then resume execution to create SUMMARY.md and mark DEPS-02, DEPS-03 complete.
 
 ---
 
