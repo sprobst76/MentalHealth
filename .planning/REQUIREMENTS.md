@@ -77,40 +77,38 @@
 
 ## Traceability
 
-*(Wird während der Roadmap-Erstellung befüllt)*
-
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| QUAL-01 | — | Pending |
-| QUAL-02 | — | Pending |
-| QUAL-03 | — | Pending |
-| QUAL-04 | — | Pending |
-| QUAL-05 | — | Pending |
-| DEPS-01 | — | Pending |
-| DEPS-02 | — | Pending |
-| DEPS-03 | — | Pending |
-| CONT-01 | — | Pending |
-| CONT-02 | — | Pending |
-| CONT-03 | — | Pending |
-| CONT-04 | — | Pending |
-| CONT-05 | — | Pending |
-| CONT-06 | — | Pending |
-| PORT-01 | — | Pending |
-| PORT-02 | — | Pending |
-| PORT-03 | — | Pending |
-| PORT-04 | — | Pending |
-| SNAP-01 | — | Pending |
-| SNAP-02 | — | Pending |
-| SNAP-03 | — | Pending |
-| SNAP-04 | — | Pending |
-| SNAP-05 | — | Pending |
-| SNAP-06 | — | Pending |
+| QUAL-01 | Phase 1 | Pending |
+| QUAL-02 | Phase 1 | Pending |
+| QUAL-03 | Phase 1 | Pending |
+| QUAL-04 | Phase 1 | Pending |
+| QUAL-05 | Phase 1 | Pending |
+| DEPS-01 | Phase 1 | Pending |
+| DEPS-02 | Phase 1 | Pending |
+| DEPS-03 | Phase 1 | Pending |
+| CONT-01 | Phase 2 | Pending |
+| CONT-02 | Phase 2 | Pending |
+| CONT-03 | Phase 2 | Pending |
+| CONT-04 | Phase 2 | Pending |
+| CONT-05 | Phase 2 | Pending |
+| CONT-06 | Phase 2 | Pending |
+| PORT-01 | Phase 3 | Pending |
+| PORT-02 | Phase 3 | Pending |
+| PORT-03 | Phase 3 | Pending |
+| PORT-04 | Phase 3 | Pending |
+| SNAP-01 | Phase 4 | Pending |
+| SNAP-02 | Phase 4 | Pending |
+| SNAP-03 | Phase 4 | Pending |
+| SNAP-04 | Phase 4 | Pending |
+| SNAP-05 | Phase 4 | Pending |
+| SNAP-06 | Phase 4 | Pending |
 
 **Coverage:**
 - v1 Requirements: 24 total
-- Mapped to phases: 0 (Roadmap ausstehend)
-- Unmapped: 24 ⚠️
+- Mapped to phases: 24 / 24
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-04-21*
-*Last updated: 2026-04-21 after initial definition*
+*Last updated: 2026-04-21 — roadmap created, all 24 requirements mapped*
