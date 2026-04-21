@@ -22,7 +22,7 @@
 ### Content-Lücken
 
 - [ ] **CONT-01**: Checkin-Backend-Modul (`backend/app/modules/checkin.py`) implementiert und im Registry registriert — PHQ-9/GAD-7-Daten werden im Server-Modus gespeichert statt 404 zurückzugeben
-- [ ] **CONT-02**: YSQ-Backend-Modul implementiert — speichert rohe 90-Integer-Antwortarray, `schema_version` vorbereitet für künftige Anpassungen
+- [x] **CONT-02**: YSQ-Backend-Modul implementiert — speichert rohe 90-Integer-Antwortarray, `schema_version` vorbereitet für künftige Anpassungen
 - [ ] **CONT-03**: YSQ-Frontend-Modul implementiert — paginierter Fragebogen (5 Items pro Schema-Seite, 18 Seiten), Fortschrittsanzeige, Überspringen möglich
 - [ ] **CONT-04**: YSQ-Ergebnisansicht — Balkendiagramm der 18 Schema-Scores, nach Score absteigend sortiert, mit Schema-Namen und freiem Notizfeld je Schema
 - [ ] **CONT-05**: YSQ-Summary-Block für Synthese-Seite — zeigt die 3 auffälligsten Schemata mit Score
