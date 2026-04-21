@@ -56,7 +56,7 @@ Plans:
 - [x] 02-04-PLAN.md — YSQ backend module + registry registration (CONT-02)
 - [x] 02-05-PLAN.md — YSQ type contracts: types.ts + constants.ts skeleton + index.ts (CONT-03/04/05 infrastructure)
 - [x] 02-06-PLAN.md — YSQ module component: questionnaire + results bar chart (CONT-03, CONT-04)
-- [ ] 02-07-PLAN.md — YSQ summary block + frontend registry wiring (CONT-05)
+- [x] 02-07-PLAN.md — YSQ summary block + frontend registry wiring (CONT-05)
 - [ ] 02-08-PLAN.md — YSQ constants population from reference/kompass.html [BLOCKED until file on disk] (CONT-02, CONT-03)
 
 ### Phase 3: Data Portability
@@ -89,7 +89,7 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Correctness & Build | 4/4 | Complete | 2026-04-21 |
-| 2. Content Gaps | 6/8 | In progress | - |
+| 2. Content Gaps | 7/8 | In progress | - |
 | 3. Data Portability | 0/? | Not started | - |
 | 4. Snapshot System | 0/? | Not started | - |
 
@@ -98,3 +98,4 @@ Plans:
 *Roadmap created: 2026-04-21*
 *Updated: 2026-04-21 — Phase 1 plans created (4 plans, 2 waves)*
 *Updated: 2026-04-21 — Phase 2 plans created (8 plans, 5 waves)*
+*Updated: 2026-04-21 — Plan 02-07 complete (7/8 Phase 2 plans done)*
