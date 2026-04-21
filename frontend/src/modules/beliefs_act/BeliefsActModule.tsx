@@ -6,14 +6,7 @@ import { uid } from "../../lib/uid";
 import type { ModuleProps } from "../registry";
 import type { ValuesData } from "../values/types";
 import type { ActCommitment, BeliefsActData } from "./types";
-
-const DEFUSION_EXAMPLES = [
-  "Ich bemerke, dass ich den Gedanken habe, dass …",
-  "Mein Kopf erzählt mir gerade die Geschichte von …",
-  "Danke, Kopf — ich kenne diesen Gedanken. Ich muss ihm aber nicht folgen.",
-  "Ich beobachte, wie dieser Gedanke kommt und geht — wie eine Wolke.",
-  "Das ist nur ein Gedanke, keine Tatsache.",
-];
+import { DEFUSION_EXAMPLES } from "./constants";
 
 export function BeliefsActModule({ data, onChange, allData }: ModuleProps<BeliefsActData>) {
   const [openId, setOpenId] = useState<string | null>(null);

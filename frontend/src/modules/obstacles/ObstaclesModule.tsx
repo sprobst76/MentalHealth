@@ -8,14 +8,7 @@ import { SCHEMA_MAP } from "../beliefs_schema/constants";
 import type { GoalsData } from "../goals/types";
 import type { ModuleProps } from "../registry";
 import type { Obstacle, ObstaclesData } from "./types";
-
-const EXPLORATION_PROMPTS = [
-  "Wie alt fühlst du dich in diesem Moment, wenn das Hindernis auftaucht?",
-  "Gibt es eine innere Stimme — klingt sie vertraut? Wessen Stimme könnte das sein?",
-  "Was hat der Teil von dir, der dieses Muster entwickelt hat, damals gebraucht?",
-  "Was wäre ein kleiner Schritt, der dir zeigt, dass du diesem Muster nicht folgen musst?",
-  "Wie kannst du dir selbst in diesem Moment Mitgefühl entgegenbringen?",
-];
+import { EXPLORATION_PROMPTS } from "./constants";
 
 export function ObstaclesModule({ data, onChange, allData }: ModuleProps<ObstaclesData>) {
   const [openId, setOpenId] = useState<string | null>(null);
