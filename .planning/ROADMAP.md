@@ -51,7 +51,7 @@ Plans:
 
 Plans:
 - [x] 02-01-PLAN.md — Constants extraction: GOAL_PROMPTS, DEFUSION_EXAMPLES, EXPLORATION_PROMPTS (CONT-06)
-- [ ] 02-02-PLAN.md — Backend test stubs: checkin + ysq integration tests (Wave 0 gap)
+- [x] 02-02-PLAN.md — Backend test stubs: checkin + ysq integration tests (Wave 0 gap)
 - [ ] 02-03-PLAN.md — Checkin backend module + registry registration (CONT-01)
 - [ ] 02-04-PLAN.md — YSQ backend module + registry registration (CONT-02)
 - [ ] 02-05-PLAN.md — YSQ type contracts: types.ts + constants.ts skeleton + index.ts (CONT-03/04/05 infrastructure)
@@ -89,7 +89,7 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Correctness & Build | 4/4 | Complete | 2026-04-21 |
-| 2. Content Gaps | 1/8 | In progress | - |
+| 2. Content Gaps | 2/8 | In progress | - |
 | 3. Data Portability | 0/? | Not started | - |
 | 4. Snapshot System | 0/? | Not started | - |
 
