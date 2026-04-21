@@ -21,7 +21,7 @@
 
 **Current phase:** 1 — Correctness & Build
 **Current plan:** None (planning not yet started)
-**Status:** Not started
+**Status:** Context gathered — ready for planning
 
 **Progress bar:**
 ```
@@ -40,6 +40,8 @@ Phase 4 [          ] 0%
 Run `/gsd-plan-phase 1` to decompose Phase 1 into executable plans.
 
 Phase 1 covers: QUAL-01, QUAL-02, QUAL-03, QUAL-04, QUAL-05, DEPS-01, DEPS-02, DEPS-03
+
+Context file: `.planning/phases/01-correctness-build/01-CONTEXT.md`
 
 ---
 
