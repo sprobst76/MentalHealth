@@ -18,6 +18,9 @@ export function ObstaclesModule({ data, onChange, allData }: ModuleProps<Obstacl
     return (gd?.goals ?? []).filter((g) => g.title.trim() && g.status === "active");
   }, [allData]);
 
+  // Note: beliefOptions reflects beliefs_schema entries (13 schemas).
+  // 4 YSQ schemas (dependence, enmeshment, entitlement, insufficient_self_control)
+  // have no beliefs_schema counterpart and will not appear here.
   const beliefOptions = useMemo(() => {
     const bd = allData?.beliefs_schema as BeliefsSchemaData | undefined;
     return (bd?.entries ?? []).filter((e) => e.active && e.intensity >= 3);
