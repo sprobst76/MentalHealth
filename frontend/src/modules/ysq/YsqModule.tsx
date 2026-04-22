@@ -11,8 +11,8 @@ import type { YsqData } from "./types";
 
 function barColor(score: number | null): string {
   if (score === null) return "var(--line)";
-  if (score >= 16) return "var(--accent)";
-  if (score >= 11) return "var(--ocean)";
+  if (score >= 24) return "var(--accent)"; // >= 80% of max 30 — high schema activation
+  if (score >= 17) return "var(--ocean)";  // >= ~55% of max 30 — moderate activation
   return "var(--sage)";
 }
 
