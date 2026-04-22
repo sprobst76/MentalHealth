@@ -33,6 +33,13 @@ const serverApi = {
       body: JSON.stringify(data),
     }),
   health: () => request<{ status: string }>("/health"),
+  exportAll: (): Promise<Record<string, unknown>> =>
+    request<Record<string, unknown>>("/api/export"),
+  importAll: (dump: Record<string, unknown>): Promise<void> =>
+    request<void>("/api/import", {
+      method: "POST",
+      body: JSON.stringify(dump),
+    }),
 };
 
 export const api = USE_LOCAL ? localApi : serverApi;
