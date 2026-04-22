@@ -4,6 +4,7 @@
 *.db-journal
 
 # Python
+uv.lock
 __pycache__/
 *.pyc
 *.pyo
