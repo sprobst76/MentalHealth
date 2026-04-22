@@ -265,8 +265,10 @@ export function SyntheseModule({ allData }: ModuleProps<unknown>) {
     try {
       const full = await api.getSnapshot(id);
       setSnapA(full);
-    } catch {
+    } catch (err: unknown) {
+      setCompareA(null);
       setSnapA(null);
+      setSnapError(err instanceof Error ? err.message : "Snapshot A konnte nicht geladen werden.");
     }
   }
 
@@ -276,8 +278,10 @@ export function SyntheseModule({ allData }: ModuleProps<unknown>) {
     try {
       const full = await api.getSnapshot(id);
       setSnapB(full);
-    } catch {
+    } catch (err: unknown) {
+      setCompareB(null);
       setSnapB(null);
+      setSnapError(err instanceof Error ? err.message : "Snapshot B konnte nicht geladen werden.");
     }
   }
 
