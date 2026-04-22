@@ -7,12 +7,19 @@
  */
 import { runMigrations } from "./lib/migrations";
 import { modules } from "./modules/registry";
-import type { ModuleRecord, ModuleSpecWire } from "./types";
+import type { ModuleRecord, ModuleSpecWire, SnapshotMeta, SnapshotFull, SnapshotModuleEntry } from "./types";
 
 const KEY = (id: string) => `kompass:module:${id}`;
+const SNAPS_KEY = "kompass:snapshots";
+const SNAP_KEY = (id: string) => `kompass:snapshot:${id}`;
 
 function now(): string {
   return new Date().toISOString();
+}
+
+function loadSnaps(): SnapshotMeta[] {
+  const raw = localStorage.getItem(SNAPS_KEY);
+  return raw ? (JSON.parse(raw) as SnapshotMeta[]) : [];
 }
 
 export const localApi = {
@@ -96,5 +103,32 @@ export const localApi = {
       }
     }
     return Promise.resolve();
+  },
+
+  createSnapshot(label?: string): Promise<SnapshotMeta> {
+    const id = crypto.randomUUID();
+    const created_at = now();
+    const modulesBlob: Record<string, SnapshotModuleEntry> = {};
+    for (const mod of modules) {
+      const raw = localStorage.getItem(KEY(mod.id));
+      if (raw) modulesBlob[mod.id] = JSON.parse(raw) as SnapshotModuleEntry;
+    }
+    const meta: SnapshotMeta = { id, label: label ?? null, created_at };
+    const full: SnapshotFull = { ...meta, modules: modulesBlob };
+    localStorage.setItem(SNAP_KEY(id), JSON.stringify(full));
+    const metas = loadSnaps();
+    metas.unshift(meta);
+    localStorage.setItem(SNAPS_KEY, JSON.stringify(metas));
+    return Promise.resolve(meta);
+  },
+
+  listSnapshots(): Promise<SnapshotMeta[]> {
+    return Promise.resolve(loadSnaps());
+  },
+
+  getSnapshot(id: string): Promise<SnapshotFull> {
+    const raw = localStorage.getItem(SNAP_KEY(id));
+    if (!raw) return Promise.reject(new Error(`Snapshot not found: ${id}`));
+    return Promise.resolve(JSON.parse(raw) as SnapshotFull);
   },
 };

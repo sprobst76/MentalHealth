@@ -1,5 +1,5 @@
 import { localApi } from "./api.local";
-import type { ModuleRecord, ModuleSpecWire } from "./types";
+import type { ModuleRecord, ModuleSpecWire, SnapshotMeta, SnapshotFull } from "./types";
 
 const BASE = (import.meta.env.VITE_API_BASE ?? "http://localhost:8000").replace(/\/$/, "");
 const TOKEN = import.meta.env.VITE_KOMPASS_TOKEN ?? "";
@@ -40,6 +40,15 @@ const serverApi = {
       method: "POST",
       body: JSON.stringify(dump),
     }),
+  createSnapshot: (label?: string): Promise<SnapshotMeta> =>
+    request<SnapshotMeta>("/api/snapshots", {
+      method: "POST",
+      body: JSON.stringify({ label: label ?? null }),
+    }),
+  listSnapshots: (): Promise<SnapshotMeta[]> =>
+    request<SnapshotMeta[]>("/api/snapshots"),
+  getSnapshot: (id: string): Promise<SnapshotFull> =>
+    request<SnapshotFull>(`/api/snapshots/${id}`),
 };
 
 export const api = USE_LOCAL ? localApi : serverApi;
