@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card } from "../../components/Card";
 import { CrisisBanner } from "../../components/CrisisBanner";
 import { PhaseHeader } from "../../components/PhaseHeader";
@@ -19,6 +19,8 @@ import type { ObstaclesData } from "../obstacles/types";
 import type { ValuesData } from "../values/types";
 import { modules } from "../registry";
 import type { ModuleProps } from "../registry";
+import { api } from "../../api";
+import type { SnapshotMeta } from "../../types";
 
 function buildTextReport(allData: Record<string, any>): string {
   const lines: string[] = [];
@@ -130,6 +132,15 @@ function buildTextReport(allData: Record<string, any>): string {
 
 export function SyntheseModule({ allData }: ModuleProps<unknown>) {
   const [copied, setCopied] = useState(false);
+  const [snaps, setSnaps] = useState<SnapshotMeta[]>([]);
+  const [snapLabel, setSnapLabel] = useState("");
+  const [snapCreating, setSnapCreating] = useState(false);
+  const [snapError, setSnapError] = useState<string | null>(null);
+
+  useEffect(() => {
+    api.listSnapshots().then(setSnaps).catch(() => {});
+  }, []);
+
   const dataModules = modules.filter((m) => m.id !== "synthese" && m.SummaryBlock);
 
   const checkin = allData?.checkin as CheckinData | undefined;
@@ -137,6 +148,20 @@ export function SyntheseModule({ allData }: ModuleProps<unknown>) {
     ? [...checkin.entries].sort((a, b) => b.timestamp.localeCompare(a.timestamp))[0]
     : null;
   const crisis = latest && latest.phq9[PHQ9_SUICIDE_ITEM_INDEX] > 0;
+
+  async function createSnapshotHandler() {
+    setSnapCreating(true);
+    setSnapError(null);
+    try {
+      const meta = await api.createSnapshot(snapLabel.trim() || undefined);
+      setSnaps((prev) => [meta, ...prev]);
+      setSnapLabel("");
+    } catch (err) {
+      setSnapError(err instanceof Error ? err.message : "Fehler beim Erstellen des Snapshots.");
+    } finally {
+      setSnapCreating(false);
+    }
+  }
 
   async function copyReport() {
     const text = buildTextReport(allData as Record<string, any>);
@@ -202,6 +227,61 @@ export function SyntheseModule({ allData }: ModuleProps<unknown>) {
           </Card>
         );
       })}
+
+      <section className="mt-8 print:hidden">
+        <h2 className="display text-2xl text-ink mb-6">Snapshots</h2>
+        <Card className="mb-4">
+          <p className="text-xs tracking-[0.15em] uppercase text-ink-faint mb-4">
+            Neuen Snapshot erstellen
+          </p>
+          <div className="flex gap-3 items-center">
+            <input
+              type="text"
+              value={snapLabel}
+              onChange={(e) => setSnapLabel(e.target.value)}
+              placeholder="Bezeichnung (optional)"
+              className="flex-1 bg-paper border border-line rounded-sm px-3 py-2 text-sm text-ink placeholder:text-ink-faint"
+            />
+            <button
+              type="button"
+              disabled={snapCreating}
+              onClick={() => void createSnapshotHandler()}
+              className="px-4 py-2 bg-ink text-paper text-sm rounded-sm hover:bg-accent transition-colors disabled:opacity-50"
+            >
+              {snapCreating ? "..." : "Snapshot erstellen"}
+            </button>
+          </div>
+          {snapError && (
+            <p className="text-xs text-accent mt-2">{snapError}</p>
+          )}
+        </Card>
+
+        {snaps.length > 0 && (
+          <Card>
+            <p className="text-xs tracking-[0.15em] uppercase text-ink-faint mb-4">Verlauf</p>
+            <div className="divide-y divide-line-soft">
+              {snaps.map((snap) => (
+                <div key={snap.id} className="py-3 flex items-start justify-between">
+                  <div>
+                    <p className="text-sm text-ink">
+                      {snap.label ?? (
+                        <span className="text-ink-faint italic">Kein Titel</span>
+                      )}
+                    </p>
+                    <p className="text-xs text-ink-faint mt-0.5">
+                      {new Date(snap.created_at).toLocaleDateString("de-DE", {
+                        day: "2-digit",
+                        month: "long",
+                        year: "numeric",
+                      })}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Card>
+        )}
+      </section>
 
       <p className="text-ink-faint text-xs mt-10 leading-relaxed print:mt-6">
         Dieser Bericht fasst deine eigenen Einträge zusammen. Er ist kein klinisches Gutachten.
