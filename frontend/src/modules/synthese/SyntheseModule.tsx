@@ -227,7 +227,14 @@ export function SyntheseModule({ allData }: ModuleProps<unknown>) {
   const [snapB, setSnapB] = useState<SnapshotFull | null>(null);
 
   useEffect(() => {
-    api.listSnapshots().then(setSnaps).catch(() => {});
+    api
+      .listSnapshots()
+      .then(setSnaps)
+      .catch((err: unknown) => {
+        setSnapError(
+          err instanceof Error ? err.message : "Snapshots konnten nicht geladen werden."
+        );
+      });
   }, []);
 
   const dataModules = modules.filter((m) => m.id !== "synthese" && m.SummaryBlock);
