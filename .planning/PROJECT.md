@@ -30,15 +30,18 @@ egal ob offline oder mit Backend betrieben.
 
 ### Active
 
-- [ ] YSQ-Modul vollständig portieren (Young Schema Questionnaire — Schemamuster erkennen), Backend + Frontend
-- [ ] Checkin-Backend-Modul implementieren (aktuell 404 im Server-Modus; Datenverlust beim Modiwechsel)
-- [ ] localApi läuft keine Migrationen beim Laden — stille Datenfehler bei Schema-Upgrades im Offline-Modus beheben
-- [ ] Export/Import-Endpoints im Backend implementieren (`GET /api/export`, `POST /api/import`)
-- [ ] Error Boundary in App.tsx — ein kaputter Modul darf die App nicht crashen
-- [ ] Snapshot-System: API-Routen und minimales UI (DB-Tabelle existiert, Routen fehlen) — nach Klärung des Nutzungswerts
-- [ ] Inhaltliche Konstanten aus Komponenten in constants.ts auslagern (CLAUDE.md-Konvention)
-- [ ] `Math.random()` für IDs durch `crypto.randomUUID()` ersetzen
-- [ ] Backend: Warnung bei Default-Token und Empty-Token-Validation
+- [ ] CR-01: `GET /api/snapshots/{id}` filtert nicht nach user_id — vor Multi-User-Aktivierung beheben (IDOR)
+- [ ] WR-01: `localApi.createSnapshot` hat kein MAX_SNAPSHOTS-Limit (Server erzwingt 200)
+- [ ] WR-02/WR-03: Snapshot-Ladefehler werden still geschluckt; Dropdown-Inkonsistenz bei fehlgeschlagenem getSnapshot
+
+### Validated in Phase 4 (Snapshot System)
+
+- ✓ SNAP-01: POST /api/snapshots — Snapshot erstellen mit optionalem Label, 201-Response (id, label, created_at)
+- ✓ SNAP-02: GET /api/snapshots — Metadaten-Liste ohne modules-Blob
+- ✓ SNAP-03: GET /api/snapshots/{id} — Vollständiger Snapshot mit forward-migriertem modules-Dict; Migrationsfehler → 200 mit Originaldaten (kein 500)
+- ✓ SNAP-04: Synthese-Seite: "Snapshot erstellen"-Formular mit Label-Eingabe und Button
+- ✓ SNAP-05: Chronologische Snapshot-Liste mit Datum (deutsches Format) und Label
+- ✓ SNAP-06: Delta-Vergleich zweier Snapshots — Values (wichtig/gelebt), YSQ-Scores, PHQ-9/GAD-7
 
 ### Out of Scope
 
@@ -84,7 +87,9 @@ Abweichung ohne expliziten Grund. Kein Emoji im UI.
 | Dual-Mode (local + server) via Build-Flag | Offline-Nutzung ohne Backend als primärer Einstieg | ✓ Good |
 | Kein State-Management-Framework | useState + api.ts reichen für v1 | — Pending |
 | Cross-Modul-Refs als `{moduleId, id}` | Entkopplung für zukünftige Modul-Varianten | ✓ Good |
-| Snapshot-System zurückstellen | Nutzer unsicher über Wert; DB-Tabelle vorbereitet | — Pending |
+| Snapshot-System zurückstellen | Nutzer unsicher über Wert; DB-Tabelle vorbereitet | ✓ Implementiert in Phase 4 |
+| GET /api/snapshots/{id} ohne user_id-Filter | Single-user v1: Auth nur auf Token-Ebene; kein IDOR-Risiko in v1 | ⚠ Vor Multi-User beheben |
+| Values-Vergleich per label.toLowerCase() | IDs ändern sich über Schema-Versionen hinweg; Label ist stabiler Nutzungsschlüssel | ✓ Good |
 
 ## Evolution
 
@@ -104,4 +109,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-21 after initialization*
+*Last updated: 2026-04-22 — Phase 4 complete, milestone v1.0 done*
