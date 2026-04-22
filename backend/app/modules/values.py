@@ -22,6 +22,8 @@ class ValueItem(BaseModel):
     label: str
     # 0 = not important, 5 = core. Matches RatingDots in the HTML reference.
     weight: int = Field(default=0, ge=0, le=5)
+    # 0 = not lived at all, 5 = fully lived. Added in schema_version 2.
+    living: int = Field(default=0, ge=0, le=5)
     note: str = ""
 
 
@@ -42,8 +44,10 @@ def default_data() -> dict[str, Any]:
 
 
 migrations: dict[int, Any] = {
-    # Example for future use:
-    # 2: lambda d: {**d, "new_field": []},
+    2: lambda d: {
+        **d,
+        "selected": [{**v, "living": v.get("living", 0)} for v in d.get("selected", [])],
+    },
 }
 
 
@@ -52,7 +56,7 @@ SPEC = ModuleSpec(
     title="Werte",
     phase_num="01",
     order=10,
-    schema_version=1,
+    schema_version=2,
     data_schema=ValuesData,
     default_data=default_data,
     migrations=migrations,
