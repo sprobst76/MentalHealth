@@ -84,8 +84,14 @@ Plans:
   2. The Synthese page shows a chronological list of all snapshots with date and label
   3. Selecting two snapshots from the list shows a delta view comparing Values wichtig/gelebt ratings, YSQ scores, and PHQ-9/GAD-7 totals
   4. A snapshot created with an older schema version is forward-migrated to current schema versions when retrieved, without error
-**Plans**: TBD
-**UI hint**: yes
+**Plans**: 5 plans
+
+Plans:
+- [ ] 04-01-PLAN.md — Failing test suite (RED gate): test_snapshots.py for SNAP-01, SNAP-02, SNAP-03
+- [ ] 04-02-PLAN.md — Backend implementation (GREEN gate): values v2 drift fix + snapshots.py router + main.py registration
+- [ ] 04-03-PLAN.md — Frontend API client: SnapshotMeta/SnapshotFull types + serverApi + localApi snapshot methods
+- [ ] 04-04-PLAN.md — Snapshot create form + chronological list in SyntheseModule.tsx (SNAP-04, SNAP-05)
+- [ ] 04-05-PLAN.md — Snapshot comparison delta view in SyntheseModule.tsx (SNAP-06)
 
 ---
 
@@ -96,7 +102,7 @@ Plans:
 | 1. Correctness & Build | 4/4 | Complete | 2026-04-21 |
 | 2. Content Gaps | 8/8 | Complete | 2026-04-22 |
 | 3. Data Portability | 0/3 | Not started | - |
-| 4. Snapshot System | 0/? | Not started | - |
+| 4. Snapshot System | 0/5 | Not started | - |
 
 ---
 
@@ -106,3 +112,4 @@ Plans:
 *Updated: 2026-04-21 — Plan 02-07 complete (7/8 Phase 2 plans done)*
 *Updated: 2026-04-22 — Plan 02-08 complete — Phase 2 fully done (8/8 plans)*
 *Updated: 2026-04-22 — Phase 3 plans created (3 plans, 2 waves)*
+*Updated: 2026-04-22 — Phase 4 plans created (5 plans, 4 waves)*
