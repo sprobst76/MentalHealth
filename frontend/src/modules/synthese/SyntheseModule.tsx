@@ -20,7 +20,9 @@ import type { ValuesData } from "../values/types";
 import { modules } from "../registry";
 import type { ModuleProps } from "../registry";
 import { api } from "../../api";
-import type { SnapshotMeta } from "../../types";
+import type { SnapshotMeta, SnapshotFull } from "../../types";
+import { YSQ_SCHEMAS } from "../ysq/constants";
+import type { YsqData } from "../ysq/types";
 
 function buildTextReport(allData: Record<string, any>): string {
   const lines: string[] = [];
@@ -130,12 +132,99 @@ function buildTextReport(allData: Record<string, any>): string {
   return lines.join("\n");
 }
 
+interface ValueDeltaRow {
+  label: string;
+  weightA: number | null;
+  livingA: number | null;
+  weightB: number | null;
+  livingB: number | null;
+}
+
+function computeValuesDelta(snapA: SnapshotFull | null, snapB: SnapshotFull | null): ValueDeltaRow[] {
+  const getSelected = (snap: SnapshotFull | null) =>
+    (snap?.modules?.values?.data as ValuesData | undefined)?.selected ?? [];
+
+  const selectedA = getSelected(snapA);
+  const selectedB = getSelected(snapB);
+
+  const allLabels = new Set([
+    ...selectedA.map((v) => v.label.toLowerCase()),
+    ...selectedB.map((v) => v.label.toLowerCase()),
+  ]);
+
+  return [...allLabels].map((lc) => {
+    const va = selectedA.find((v) => v.label.toLowerCase() === lc);
+    const vb = selectedB.find((v) => v.label.toLowerCase() === lc);
+    return {
+      label: va?.label ?? vb?.label ?? lc,
+      weightA: va?.weight ?? null,
+      livingA: va?.living ?? null,
+      weightB: vb?.weight ?? null,
+      livingB: vb?.living ?? null,
+    };
+  });
+}
+
+function computeYsqDelta(
+  snapA: SnapshotFull | null,
+  snapB: SnapshotFull | null,
+): Array<{ label: string; scoreA: number | null; scoreB: number | null }> {
+  const getAnswers = (snap: SnapshotFull | null): (number | null)[] | null =>
+    (snap?.modules?.ysq?.data as YsqData | undefined)?.answers ?? null;
+
+  const answersA = getAnswers(snapA);
+  const answersB = getAnswers(snapB);
+
+  return YSQ_SCHEMAS.map((schema, i) => {
+    const scoreA = answersA
+      ? (() => {
+          const items = answersA.slice(i * 5, i * 5 + 5);
+          return items.every((v) => v === null)
+            ? null
+            : items.reduce<number>((s, v) => s + (v ?? 0), 0);
+        })()
+      : null;
+    const scoreB = answersB
+      ? (() => {
+          const items = answersB.slice(i * 5, i * 5 + 5);
+          return items.every((v) => v === null)
+            ? null
+            : items.reduce<number>((s, v) => s + (v ?? 0), 0);
+        })()
+      : null;
+    return { label: schema.label, scoreA, scoreB };
+  });
+}
+
+function computeCheckinDelta(
+  snapA: SnapshotFull | null,
+  snapB: SnapshotFull | null,
+): { phqA: number | null; gadA: number | null; phqB: number | null; gadB: number | null } {
+  const getLatest = (snap: SnapshotFull | null) => {
+    const data = snap?.modules?.checkin?.data as CheckinData | undefined;
+    if (!data?.entries?.length) return null;
+    return [...data.entries].sort((a, b) => b.timestamp.localeCompare(a.timestamp))[0];
+  };
+  const latestA = getLatest(snapA);
+  const latestB = getLatest(snapB);
+  return {
+    phqA: latestA ? sumAnswers(latestA.phq9) : null,
+    gadA: latestA ? sumAnswers(latestA.gad7) : null,
+    phqB: latestB ? sumAnswers(latestB.phq9) : null,
+    gadB: latestB ? sumAnswers(latestB.gad7) : null,
+  };
+}
+
 export function SyntheseModule({ allData }: ModuleProps<unknown>) {
   const [copied, setCopied] = useState(false);
   const [snaps, setSnaps] = useState<SnapshotMeta[]>([]);
   const [snapLabel, setSnapLabel] = useState("");
   const [snapCreating, setSnapCreating] = useState(false);
   const [snapError, setSnapError] = useState<string | null>(null);
+  const [compareA, setCompareA] = useState<string | null>(null);
+  const [compareB, setCompareB] = useState<string | null>(null);
+  const [snapA, setSnapA] = useState<SnapshotFull | null>(null);
+  const [snapB, setSnapB] = useState<SnapshotFull | null>(null);
 
   useEffect(() => {
     api.listSnapshots().then(setSnaps).catch(() => {});
@@ -160,6 +249,28 @@ export function SyntheseModule({ allData }: ModuleProps<unknown>) {
       setSnapError(err instanceof Error ? err.message : "Fehler beim Erstellen des Snapshots.");
     } finally {
       setSnapCreating(false);
+    }
+  }
+
+  async function selectCompareA(id: string | null) {
+    setCompareA(id);
+    if (!id) { setSnapA(null); return; }
+    try {
+      const full = await api.getSnapshot(id);
+      setSnapA(full);
+    } catch {
+      setSnapA(null);
+    }
+  }
+
+  async function selectCompareB(id: string | null) {
+    setCompareB(id);
+    if (!id) { setSnapB(null); return; }
+    try {
+      const full = await api.getSnapshot(id);
+      setSnapB(full);
+    } catch {
+      setSnapB(null);
     }
   }
 
@@ -279,6 +390,134 @@ export function SyntheseModule({ allData }: ModuleProps<unknown>) {
                 </div>
               ))}
             </div>
+          </Card>
+        )}
+
+        {snaps.length >= 2 && (
+          <Card className="mt-4">
+            <p className="text-xs tracking-[0.15em] uppercase text-ink-faint mb-4">Vergleich</p>
+            <div className="flex gap-4 mb-6">
+              <select
+                value={compareA ?? ""}
+                onChange={(e) => void selectCompareA(e.target.value || null)}
+                className="flex-1 bg-paper border border-line rounded-sm px-3 py-2 text-sm text-ink"
+              >
+                <option value="">Snapshot A</option>
+                {snaps.map((s) => (
+                  <option key={s.id} value={s.id}>
+                    {s.label ?? "Kein Titel"} — {new Date(s.created_at).toLocaleDateString("de-DE")}
+                  </option>
+                ))}
+              </select>
+              <select
+                value={compareB ?? ""}
+                onChange={(e) => void selectCompareB(e.target.value || null)}
+                className="flex-1 bg-paper border border-line rounded-sm px-3 py-2 text-sm text-ink"
+              >
+                <option value="">Snapshot B</option>
+                {snaps.map((s) => (
+                  <option key={s.id} value={s.id}>
+                    {s.label ?? "Kein Titel"} — {new Date(s.created_at).toLocaleDateString("de-DE")}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {snapA && snapB && (
+              <div className="space-y-8">
+                {(() => {
+                  const rows = computeValuesDelta(snapA, snapB);
+                  if (!rows.length) return null;
+                  return (
+                    <div>
+                      <h3 className="display text-lg text-ink mb-3">Werte</h3>
+                      <table className="w-full text-sm">
+                        <thead>
+                          <tr className="text-xs tracking-[0.1em] uppercase text-ink-faint border-b border-line-soft">
+                            <th className="text-left py-1 pr-4 font-normal">Wert</th>
+                            <th className="text-right py-1 px-2 font-normal">wichtig A</th>
+                            <th className="text-right py-1 px-2 font-normal">gelebt A</th>
+                            <th className="text-right py-1 px-2 font-normal">wichtig B</th>
+                            <th className="text-right py-1 px-2 font-normal">gelebt B</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-line-soft">
+                          {rows.map((r) => (
+                            <tr key={r.label}>
+                              <td className="py-2 pr-4 text-ink">{r.label}</td>
+                              <td className="py-2 px-2 text-right text-ink-soft">{r.weightA ?? "—"}</td>
+                              <td className="py-2 px-2 text-right text-ink-soft">{r.livingA ?? "—"}</td>
+                              <td className="py-2 px-2 text-right text-ink-soft">{r.weightB ?? "—"}</td>
+                              <td className="py-2 px-2 text-right text-ink-soft">{r.livingB ?? "—"}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  );
+                })()}
+
+                {(() => {
+                  const rows = computeYsqDelta(snapA, snapB);
+                  const anyData = rows.some((r) => r.scoreA !== null || r.scoreB !== null);
+                  if (!anyData) return null;
+                  return (
+                    <div>
+                      <h3 className="display text-lg text-ink mb-3">YSQ-Schemata</h3>
+                      <table className="w-full text-sm">
+                        <thead>
+                          <tr className="text-xs tracking-[0.1em] uppercase text-ink-faint border-b border-line-soft">
+                            <th className="text-left py-1 pr-4 font-normal">Schema</th>
+                            <th className="text-right py-1 px-2 font-normal">Score A</th>
+                            <th className="text-right py-1 px-2 font-normal">Score B</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-line-soft">
+                          {rows.map((r) => (
+                            <tr key={r.label}>
+                              <td className="py-2 pr-4 text-ink">{r.label}</td>
+                              <td className="py-2 px-2 text-right text-ink-soft">{r.scoreA ?? "—"}</td>
+                              <td className="py-2 px-2 text-right text-ink-soft">{r.scoreB ?? "—"}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  );
+                })()}
+
+                {(() => {
+                  const { phqA, gadA, phqB, gadB } = computeCheckinDelta(snapA, snapB);
+                  if (phqA === null && phqB === null && gadA === null && gadB === null) return null;
+                  return (
+                    <div>
+                      <h3 className="display text-lg text-ink mb-3">Check-in</h3>
+                      <table className="w-full text-sm">
+                        <thead>
+                          <tr className="text-xs tracking-[0.1em] uppercase text-ink-faint border-b border-line-soft">
+                            <th className="text-left py-1 pr-4 font-normal">Skala</th>
+                            <th className="text-right py-1 px-2 font-normal">A</th>
+                            <th className="text-right py-1 px-2 font-normal">B</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-line-soft">
+                          <tr>
+                            <td className="py-2 pr-4 text-ink">PHQ-9</td>
+                            <td className="py-2 px-2 text-right text-ink-soft">{phqA ?? "—"}</td>
+                            <td className="py-2 px-2 text-right text-ink-soft">{phqB ?? "—"}</td>
+                          </tr>
+                          <tr>
+                            <td className="py-2 pr-4 text-ink">GAD-7</td>
+                            <td className="py-2 px-2 text-right text-ink-soft">{gadA ?? "—"}</td>
+                            <td className="py-2 px-2 text-right text-ink-soft">{gadB ?? "—"}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  );
+                })()}
+              </div>
+            )}
           </Card>
         )}
       </section>
