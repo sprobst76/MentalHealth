@@ -79,21 +79,22 @@ export const localApi = {
     return Promise.resolve({ status: "ok (local)" });
   },
 
-  exportAll(): Record<string, unknown> {
+  exportAll(): Promise<Record<string, unknown>> {
     const out: Record<string, unknown> = { _version: 1, _exported: new Date().toISOString() };
     for (const mod of modules) {
       const raw = localStorage.getItem(KEY(mod.id));
       if (raw) out[mod.id] = JSON.parse(raw);
     }
-    return out;
+    return Promise.resolve(out);
   },
 
-  importAll(dump: Record<string, unknown>): void {
+  importAll(dump: Record<string, unknown>): Promise<void> {
     for (const mod of modules) {
       const entry = dump[mod.id];
       if (entry && typeof entry === "object") {
         localStorage.setItem(KEY(mod.id), JSON.stringify(entry));
       }
     }
+    return Promise.resolve();
   },
 };
