@@ -9,7 +9,7 @@
 ## Phases
 
 - [x] **Phase 1: Correctness & Build** — Fix active data-loss bugs, harden the app shell, update dependencies
-- [ ] **Phase 2: Content Gaps** — Checkin backend module + full YSQ module (backend, frontend, results, summary) + extract constants
+- [x] **Phase 2: Content Gaps** — Checkin backend module + full YSQ module (backend, frontend, results, summary) + extract constants
 - [ ] **Phase 3: Data Portability** — Export/Import backend endpoints + mode-aware wiring in App.tsx
 - [ ] **Phase 4: Snapshot System** — Snapshot API routes + minimal UI (create, list, compare) on Synthese page
 
@@ -57,7 +57,7 @@ Plans:
 - [x] 02-05-PLAN.md — YSQ type contracts: types.ts + constants.ts skeleton + index.ts (CONT-03/04/05 infrastructure)
 - [x] 02-06-PLAN.md — YSQ module component: questionnaire + results bar chart (CONT-03, CONT-04)
 - [x] 02-07-PLAN.md — YSQ summary block + frontend registry wiring (CONT-05)
-- [ ] 02-08-PLAN.md — YSQ constants population from reference/kompass.html [BLOCKED until file on disk] (CONT-02, CONT-03)
+- [x] 02-08-PLAN.md — YSQ constants population from reference/kompass.html (CONT-02, CONT-03)
 
 ### Phase 3: Data Portability
 **Goal**: Users can export all their data and import it back — in both local and server mode, with full HTML-v1 compatibility
@@ -89,7 +89,7 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Correctness & Build | 4/4 | Complete | 2026-04-21 |
-| 2. Content Gaps | 7/8 | In progress | - |
+| 2. Content Gaps | 8/8 | Complete | 2026-04-22 |
 | 3. Data Portability | 0/? | Not started | - |
 | 4. Snapshot System | 0/? | Not started | - |
 
@@ -99,3 +99,4 @@ Plans:
 *Updated: 2026-04-21 — Phase 1 plans created (4 plans, 2 waves)*
 *Updated: 2026-04-21 — Phase 2 plans created (8 plans, 5 waves)*
 *Updated: 2026-04-21 — Plan 02-07 complete (7/8 Phase 2 plans done)*
+*Updated: 2026-04-22 — Plan 02-08 complete — Phase 2 fully done (8/8 plans)*
