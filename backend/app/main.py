@@ -7,7 +7,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from .config import _DEFAULT_TOKEN, settings
-from .routers import health, modules
+from .routers import health, modules, portability
 
 logger = logging.getLogger(__name__)
 
@@ -35,3 +35,4 @@ app.add_middleware(
 
 app.include_router(health.router)
 app.include_router(modules.router)
+app.include_router(portability.router)
