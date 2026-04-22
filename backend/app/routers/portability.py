@@ -15,7 +15,7 @@ import logging
 from datetime import datetime, timezone
 from uuid import UUID
 
-from fastapi import APIRouter, Body, Depends
+from fastapi import APIRouter, Body, Depends, HTTPException
 from sqlmodel import Session, select
 
 from ..auth import current_user_id
@@ -23,6 +23,9 @@ from ..db import get_session
 from ..models import ModuleRecord
 
 logger = logging.getLogger(__name__)
+
+MAX_IMPORT_ENTRIES = 100
+MODULE_ID_MAX_LEN = 50
 
 router = APIRouter(prefix="/api", tags=["portability"])
 
@@ -61,6 +64,9 @@ def import_all(
     Skips metadata keys starting with '_' and malformed entries.
     Does not validate against module schemas — lazy migration on next GET.
     """
+    if len(payload) > MAX_IMPORT_ENTRIES:
+        raise HTTPException(status_code=422, detail="Too many entries in import payload.")
+
     imported: list[str] = []
     skipped: list[str] = []
     now = datetime.now(timezone.utc)
@@ -68,6 +74,9 @@ def import_all(
     for key, entry in payload.items():
         # Skip metadata keys (_version, _exported, etc.)
         if key.startswith("_") or not isinstance(entry, dict):
+            continue
+        if len(key) > MODULE_ID_MAX_LEN:
+            skipped.append(key[:MODULE_ID_MAX_LEN] + "…")
             continue
         if "data" not in entry or "schema_version" not in entry:
             skipped.append(key)
