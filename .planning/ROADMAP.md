@@ -68,7 +68,12 @@ Plans:
   2. An export created by the original HTML-v1 app can be imported in server mode and the data is visible in all modules after reload
   3. Clicking "Export" or "Import" in local mode calls `localApi` — not a hardcoded reference that ignores the active storage mode
   4. The Import button in server mode is disabled with an explanatory note if the backend endpoint is not available
-**Plans**: TBD
+**Plans**: 3 plans
+
+Plans:
+- [ ] 03-01-PLAN.md — Backend portability router: GET /api/export + POST /api/import + Integration-Tests (PORT-01, PORT-02)
+- [ ] 03-02-PLAN.md — Frontend API: serverApi um exportAll/importAll erweitern (PORT-03)
+- [ ] 03-03-PLAN.md — App.tsx Verdrahtung: mode-aware exportJSON/importJSON + Buttons in beiden Modi (PORT-03, PORT-04)
 
 ### Phase 4: Snapshot System
 **Goal**: Users can manually create timestamped snapshots of their complete state and compare any two snapshots side by side
@@ -90,7 +95,7 @@ Plans:
 |-------|----------------|--------|-----------|
 | 1. Correctness & Build | 4/4 | Complete | 2026-04-21 |
 | 2. Content Gaps | 8/8 | Complete | 2026-04-22 |
-| 3. Data Portability | 0/? | Not started | - |
+| 3. Data Portability | 0/3 | Not started | - |
 | 4. Snapshot System | 0/? | Not started | - |
 
 ---
@@ -100,3 +105,4 @@ Plans:
 *Updated: 2026-04-21 — Phase 2 plans created (8 plans, 5 waves)*
 *Updated: 2026-04-21 — Plan 02-07 complete (7/8 Phase 2 plans done)*
 *Updated: 2026-04-22 — Plan 02-08 complete — Phase 2 fully done (8/8 plans)*
+*Updated: 2026-04-22 — Phase 3 plans created (3 plans, 2 waves)*
