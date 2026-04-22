@@ -2,22 +2,22 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_phase: 3 — Data Portability
-current_plan: 01 (not yet started)
-status: ready_to_execute
-stopped_at: Phase 3 planned (3 plans, 2 waves). Ready to execute.
-last_updated: "2026-04-22T08:30:00Z"
+current_phase: 4 — Snapshot System
+current_plan: 05 (complete)
+status: milestone_complete
+stopped_at: Phase 4 complete — all 5 plans done. Milestone v1.0 complete.
+last_updated: "2026-04-22T12:00:00Z"
 progress:
   total_phases: 4
-  completed_phases: 2
-  total_plans: 15
-  completed_plans: 12
-  percent: 80
+  completed_phases: 4
+  total_plans: 20
+  completed_plans: 20
+  percent: 100
 ---
 
 # Kompass — Project State
 
-**Last updated:** 2026-04-21T12:20Z
+**Last updated:** 2026-04-22
 
 ---
 
@@ -25,7 +25,7 @@ progress:
 
 **Core value:** Ein verlässlicher privater Raum, in dem Reflexionsarbeit über lange Zeit erhalten bleibt — egal ob offline oder mit Backend betrieben.
 
-**Current milestone:** v1 Completion
+**Current milestone:** v1 Completion — **COMPLETE**
 
 **Key files:**
 
@@ -37,28 +37,31 @@ progress:
 
 ## Current Position
 
-**Current phase:** 3 — Data Portability (next)
-**Current plan:** 01 (not yet started)
-**Status:** Phase 2 complete — all 8 plans done
+**Current phase:** 4 — Snapshot System (complete)
+**Status:** All 4 phases complete — milestone v1.0 done
 
 **Progress bar:**
 
 ```
 Phase 1 [==========] 100% (all 4 plans complete)
 Phase 2 [==========] 100% (all 8 plans complete)
-Phase 3 [          ] 0%
-Phase 4 [          ] 0%
+Phase 3 [==========] 100% (all 3 plans complete)
+Phase 4 [==========] 100% (all 5 plans done)
 ```
 
-**Requirements covered:** 17 / 24 (QUAL-01, QUAL-02, QUAL-03, QUAL-04, QUAL-05, DEPS-01, DEPS-02, DEPS-03, CONT-06, CONT-01, CONT-02, CONT-03, CONT-04, CONT-05, CONT-05[summary], CONT-02[items], CONT-03[items])
+**Requirements covered:** 24 / 24
 
 ---
 
 ## Next Action
 
-Phase 2 planned (8 plans, 5 waves). **Note:** Plan 02-08 (YSQ constants population) requires `reference/kompass.html` on disk before Wave 5 can execute — plans 02-01 through 02-07 run fully autonomously.
+Milestone v1.0 complete. Run `/gsd-complete-milestone` to archive and start v1.1 planning, or address code review findings:
 
-Run: `/gsd-execute-phase 2`
+- **CR-01 (Critical):** `GET /api/snapshots/{id}` does not filter by `user_id` — safe for single-user v1, becomes IDOR when multi-user activates. Fix before enabling multi-user.
+- **WR-01:** `localApi` has no MAX_SNAPSHOTS cap (server enforces 200, local does not).
+- **WR-02/WR-03:** Snapshot list load errors silently swallowed; failed `getSnapshot` leaves dropdown inconsistent.
+
+Run `/gsd-code-review-fix 4` to auto-fix these.
 
 ---
 
@@ -74,12 +77,14 @@ Run: `/gsd-execute-phase 2`
 - vite.config.ts required no changes for Vite 7 compatibility — existing config used no deprecated APIs
 - Offline build runs via Docker (node:20-alpine) because host Node 18 is below Vite 7's minimum of 20.19
 - YSQ answers/draft use `list[int | None] | None` — outer None = no run yet, inner None = skipped item; mirrors TypeScript `YsqAnswer[] | null` exactly
+- `GET /api/snapshots/{id}` intentionally does not filter by user_id (single-user v1); auth enforced at token level only
 
 ### Known pitfalls (from research)
 
 - `crypto.randomUUID()` requires Secure Context — `file://` behavior varies by browser; keep `Math.random` fallback path
 - Migration functions must never be deleted — old snapshots may need to chain through v1→v2→v3
 - Import must skip Pydantic validation — raw blob in, lazy migration on next GET
+- Values snapshot comparison joins by `label.toLowerCase()`, not by id — IDs differ across schema versions
 
 ### Blockers
 
@@ -93,14 +98,9 @@ None.
 
 ## Session Continuity
 
-To resume work in a new session:
+**Last session:** 2026-04-22 — Phase 4 (Snapshot System) vollständig abgeschlossen. 5 Pläne, 4 Wellen: TDD RED→GREEN für Backend-API, Frontend-Typen + API-Client, Snapshot-Formular + Liste + Delta-Vergleich in SyntheseModule. Code Review: 1 critical (user_id-Filter fehlt in GET /{id}), 4 warnings. Verifikation: 6/6 SNAP-Anforderungen bestätigt.
 
-1. Read this file for current position
-2. Read ROADMAP.md for phase overview
-3. Run `/gsd-execute-phase 2` to begin Phase 2 (Content Gaps), or `/gsd-plan-phase 2` if Phase 2 plans are not yet created
-
-**Last session:** 2026-04-22 — Phase 2 vollständig abgeschlossen. Alle 8 Pläne ausgeführt, Code Review (5 Warnings behoben), Browser-Tests bestanden. YSQ-Modul funktioniert end-to-end.
-**Stopped at:** Phase 2 complete + human verified. Next: Phase 3 (Data Portability) — run /gsd-plan-phase 3.
+**Stopped at:** Milestone v1.0 complete. Next: `/gsd-code-review-fix 4` for CR-01, or `/gsd-complete-milestone` to archive.
 
 ---
 
