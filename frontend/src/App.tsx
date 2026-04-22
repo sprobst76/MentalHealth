@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { api } from "./api";
-import { localApi } from "./api.local";
 import { CrisisBanner } from "./components/CrisisBanner";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { runMigrations } from "./lib/migrations";
@@ -10,8 +9,8 @@ import { getModule, modules } from "./modules/registry";
 
 const isLocal = import.meta.env.VITE_STORAGE === "local";
 
-function exportJSON() {
-  const data = localApi.exportAll();
+async function exportJSON() {
+  const data = await api.exportAll();
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
@@ -23,10 +22,10 @@ function exportJSON() {
 
 function importJSON(file: File, onDone: () => void) {
   const reader = new FileReader();
-  reader.onload = (e) => {
+  reader.onload = async (e) => {
     try {
       const dump = JSON.parse(e.target?.result as string);
-      localApi.importAll(dump);
+      await api.importAll(dump);
       onDone();
     } catch {
       alert("Datei konnte nicht gelesen werden.");
@@ -140,38 +139,35 @@ export default function App() {
             {crisisDetected ? "⚠ Hilfe in der Krise" : "Hilfe in der Krise"}
           </button>
 
-          {isLocal && (
-            <>
-            <button
-              type="button"
-              onClick={exportJSON}
-              className="w-full text-left px-3 py-2 text-sm text-ink-soft hover:bg-paper-3 rounded-sm transition-colors"
-            >
-              Daten exportieren
-            </button>
-            <button
-              type="button"
-              onClick={() => fileRef.current?.click()}
-              className="w-full text-left px-3 py-2 text-sm text-ink-soft hover:bg-paper-3 rounded-sm transition-colors"
-            >
-              Daten importieren
-            </button>
-            <input
-              ref={fileRef}
-              type="file"
-              accept=".json"
-              className="hidden"
-              onChange={(e) => {
-                const file = e.target.files?.[0];
-                if (file) importJSON(file, () => {
-                  setStore(emptyStore());
-                  setImportKey((k) => k + 1);
-                });
-                e.target.value = "";
-              }}
-            />
-            </>
-          )}
+          <button
+            type="button"
+            onClick={() => void exportJSON()}
+            className="w-full text-left px-3 py-2 text-sm text-ink-soft hover:bg-paper-3 rounded-sm transition-colors"
+          >
+            Daten exportieren
+          </button>
+          <button
+            type="button"
+            onClick={() => fileRef.current?.click()}
+            title={isLocal ? undefined : "Import via Backend-Endpoint (POST /api/import)"}
+            className="w-full text-left px-3 py-2 text-sm text-ink-soft hover:bg-paper-3 rounded-sm transition-colors"
+          >
+            Daten importieren
+          </button>
+          <input
+            ref={fileRef}
+            type="file"
+            accept=".json"
+            className="hidden"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) importJSON(file, () => {
+                setStore(emptyStore());
+                setImportKey((k) => k + 1);
+              });
+              e.target.value = "";
+            }}
+          />
         </div>
       </aside>
 
