@@ -114,6 +114,7 @@ export function GoalsModule({ data, onChange, allData }: ModuleProps<GoalsData>)
                   <div>
                     <label className="block text-xs tracking-[0.12em] uppercase text-ink-faint mb-2">Titel</label>
                     <input
+                      type="text"
                       value={g.title}
                       onChange={(e) => update(g.id, { title: e.target.value })}
                       placeholder="Wöchentlich eine echte, tiefe Unterhaltung führen"
@@ -180,6 +181,7 @@ export function GoalsModule({ data, onChange, allData }: ModuleProps<GoalsData>)
                   <div>
                     <label className="block text-xs tracking-[0.12em] uppercase text-ink-faint mb-2">Erster Schritt</label>
                     <input
+                      type="text"
                       value={g.first_step}
                       onChange={(e) => update(g.id, { first_step: e.target.value })}
                       placeholder="Morgen Vormittag: Maria anrufen und für Freitag ein Treffen vereinbaren."

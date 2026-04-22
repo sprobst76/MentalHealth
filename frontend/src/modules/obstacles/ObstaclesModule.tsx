@@ -101,6 +101,7 @@ export function ObstaclesModule({ data, onChange, allData }: ModuleProps<Obstacl
                   <div>
                     <label className="block text-xs tracking-[0.12em] uppercase text-ink-faint mb-2">Titel</label>
                     <input
+                      type="text"
                       value={o.title}
                       onChange={(e) => update(o.id, { title: e.target.value })}
                       placeholder="Ich zögere, mich zu zeigen"
