@@ -106,6 +106,13 @@ export const localApi = {
   },
 
   createSnapshot(label?: string): Promise<SnapshotMeta> {
+    const metas = loadSnaps();
+    const MAX_SNAPSHOTS = 200;
+    if (metas.length >= MAX_SNAPSHOTS) {
+      return Promise.reject(
+        new Error(`Maximum number of snapshots (${MAX_SNAPSHOTS}) reached.`)
+      );
+    }
     const id = crypto.randomUUID();
     const created_at = now();
     const modulesBlob: Record<string, SnapshotModuleEntry> = {};
@@ -116,7 +123,6 @@ export const localApi = {
     const meta: SnapshotMeta = { id, label: label ?? null, created_at };
     const full: SnapshotFull = { ...meta, modules: modulesBlob };
     localStorage.setItem(SNAP_KEY(id), JSON.stringify(full));
-    const metas = loadSnaps();
     metas.unshift(meta);
     localStorage.setItem(SNAPS_KEY, JSON.stringify(metas));
     return Promise.resolve(meta);
