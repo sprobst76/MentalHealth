@@ -17,3 +17,18 @@ export interface ModuleSpecWire {
 }
 
 export type AllData = Record<string, unknown>;
+
+export interface SnapshotMeta {
+  id: string;
+  label: string | null;
+  created_at: string;
+}
+
+export interface SnapshotModuleEntry {
+  schema_version: number;
+  data: unknown;
+}
+
+export interface SnapshotFull extends SnapshotMeta {
+  modules: Record<string, SnapshotModuleEntry>;
+}
