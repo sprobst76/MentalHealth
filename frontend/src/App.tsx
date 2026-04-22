@@ -24,7 +24,16 @@ function importJSON(file: File, onDone: () => void) {
   const reader = new FileReader();
   reader.onload = async (e) => {
     try {
-      const dump = JSON.parse(e.target?.result as string);
+      const raw = e.target?.result;
+      if (typeof raw !== "string" || !raw.trim()) {
+        alert("Die Datei ist leer oder konnte nicht gelesen werden.");
+        return;
+      }
+      const dump = JSON.parse(raw);
+      if (!dump || typeof dump !== "object" || Array.isArray(dump)) {
+        alert("Ungültiges Format: kein JSON-Objekt.");
+        return;
+      }
       await api.importAll(dump);
       onDone();
     } catch {
