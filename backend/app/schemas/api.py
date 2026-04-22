@@ -27,3 +27,10 @@ class SnapshotResponse(BaseModel):
     id: UUID
     label: str | None
     created_at: datetime
+
+
+class SnapshotFullResponse(BaseModel):
+    id: UUID
+    label: str | None
+    created_at: datetime
+    modules: dict[str, dict[str, Any]]
