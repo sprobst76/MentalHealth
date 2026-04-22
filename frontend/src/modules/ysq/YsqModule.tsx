@@ -30,7 +30,7 @@ export function YsqModule({ data, onChange }: ModuleProps<YsqData>) {
       const slice = data.draft.slice(i * 5, i * 5 + 5);
       if (slice.every((v) => v === null)) return i;
     }
-    return 17;
+    return 0; // fully-answered draft: start from beginning for review
   });
 
   const [localDraft, setLocalDraft] = useState<(number | null)[]>(() =>
@@ -93,7 +93,7 @@ export function YsqModule({ data, onChange }: ModuleProps<YsqData>) {
           <div className="h-0.5 bg-line-soft rounded-full mt-2 mb-6">
             <div
               className="h-full bg-ink-soft rounded-full"
-              style={{ width: `${(currentSchemaIdx / 18) * 100}%` }}
+              style={{ width: `${((currentSchemaIdx + 1) / 18) * 100}%` }}
             />
           </div>
 
@@ -176,6 +176,37 @@ export function YsqModule({ data, onChange }: ModuleProps<YsqData>) {
   }
 
   // overview mode
+  if (data.answers == null) {
+    return (
+      <div className="max-w-3xl mx-auto px-6 py-12">
+        <PhaseHeader
+          phaseNum="02"
+          title="Young Schema Questionnaire"
+          subtitle="Der YSQ-S3 erfasst 18 Maladaptive Schemata in 90 Aussagen. Lies jede Aussage und wähle, wie gut sie auf dich zutrifft."
+        />
+        <Card>
+          <h2 className="display text-xl mb-2">Noch keine Ergebnisse</h2>
+          <p className="text-sm text-ink-soft">
+            {"Fülle den Fragebogen aus, um deine Schema-Scores zu sehen."}
+          </p>
+        </Card>
+        <button
+          type="button"
+          onClick={() => {
+            const newDraft = Array(90).fill(null);
+            setLocalDraft(newDraft);
+            setCurrentSchemaIdx(0);
+            onChange({ ...data, draft: newDraft });
+            setMode("questionnaire");
+          }}
+          className="px-4 py-2 border border-line text-ink-soft rounded-sm hover:border-ink-soft transition-colors mt-6"
+        >
+          Fragebogen neu ausfüllen
+        </button>
+      </div>
+    );
+  }
+
   const schemaResults = YSQ_SCHEMAS.map((schema, i) => {
     const items = data.answers!.slice(i * 5, i * 5 + 5);
     const allNull = items.every((v) => v === null);
@@ -195,64 +226,55 @@ export function YsqModule({ data, onChange }: ModuleProps<YsqData>) {
         subtitle="Der YSQ-S3 erfasst 18 Maladaptive Schemata in 90 Aussagen. Lies jede Aussage und wähle, wie gut sie auf dich zutrifft."
       />
 
-      {data.answers == null ? (
-        <Card>
-          <h2 className="display text-xl mb-2">Noch keine Ergebnisse</h2>
-          <p className="text-sm text-ink-soft">
-            {"Fülle den Fragebogen aus, um deine Schema-Scores zu sehen."}
-          </p>
-        </Card>
-      ) : (
-        <Card>
-          <h2 className="display text-xl mb-6">Ergebnisse</h2>
-          <ul>
-            {sorted.map((row) => (
-              <li
-                key={row.schemaIdx}
-                className="border-b border-line-soft last:border-b-0"
-              >
-                <div className="flex items-center gap-4 py-3">
-                  <span className="text-sm text-ink min-w-[140px] shrink-0">
-                    {row.schema.label}
-                  </span>
-                  <div className="flex-1 bg-paper-3 rounded-sm h-3 overflow-hidden">
-                    {row.score !== null && (
-                      <div
-                        className="h-full rounded-sm transition-all"
-                        style={{
-                          width: `${(row.score / YSQ_MAX_SCHEMA_SCORE) * 100}%`,
-                          backgroundColor: barColor(row.score),
-                        }}
-                      />
-                    )}
-                  </div>
-                  <span className="text-xs font-mono text-ink-faint ml-2 w-8 text-right shrink-0">
-                    {row.score ?? "–"}
-                  </span>
-                  {row.score === null && (
-                    <span className="text-xs text-ink-faint italic ml-1">
-                      nicht ausgefüllt
-                    </span>
+      <Card>
+        <h2 className="display text-xl mb-6">Ergebnisse</h2>
+        <ul>
+          {sorted.map((row) => (
+            <li
+              key={row.schemaIdx}
+              className="border-b border-line-soft last:border-b-0"
+            >
+              <div className="flex items-center gap-4 py-3">
+                <span className="text-sm text-ink min-w-[140px] shrink-0">
+                  {row.schema.label}
+                </span>
+                <div className="flex-1 bg-paper-3 rounded-sm h-3 overflow-hidden">
+                  {row.score !== null && (
+                    <div
+                      className="h-full rounded-sm transition-all"
+                      style={{
+                        width: `${(row.score / YSQ_MAX_SCHEMA_SCORE) * 100}%`,
+                        backgroundColor: barColor(row.score),
+                      }}
+                    />
                   )}
                 </div>
-                <input
-                  type="text"
-                  maxLength={200}
-                  value={data.notes[String(row.schemaIdx)] ?? ""}
-                  onChange={(e) =>
-                    onChange({
-                      ...data,
-                      notes: { ...data.notes, [String(row.schemaIdx)]: e.target.value },
-                    })
-                  }
-                  placeholder={"Notiz zu diesem Schema …"}
-                  className="w-full bg-paper border border-line px-3 py-1.5 text-sm rounded-sm text-ink placeholder:text-ink-faint focus:outline-none focus:border-ink-soft mt-1 mb-3"
-                />
-              </li>
-            ))}
-          </ul>
-        </Card>
-      )}
+                <span className="text-xs font-mono text-ink-faint ml-2 w-8 text-right shrink-0">
+                  {row.score ?? "–"}
+                </span>
+                {row.score === null && (
+                  <span className="text-xs text-ink-faint italic ml-1">
+                    nicht ausgefüllt
+                  </span>
+                )}
+              </div>
+              <input
+                type="text"
+                maxLength={200}
+                value={data.notes[String(row.schemaIdx)] ?? ""}
+                onChange={(e) =>
+                  onChange({
+                    ...data,
+                    notes: { ...data.notes, [String(row.schemaIdx)]: e.target.value },
+                  })
+                }
+                placeholder={"Notiz zu diesem Schema …"}
+                className="w-full bg-paper border border-line px-3 py-1.5 text-sm rounded-sm text-ink placeholder:text-ink-faint focus:outline-none focus:border-ink-soft mt-1 mb-3"
+              />
+            </li>
+          ))}
+        </ul>
+      </Card>
 
       <button
         type="button"
@@ -265,7 +287,7 @@ export function YsqModule({ data, onChange }: ModuleProps<YsqData>) {
         }}
         className="px-4 py-2 border border-line text-ink-soft rounded-sm hover:border-ink-soft transition-colors mt-6"
       >
-        Fragebogen neu ausf&#252;llen
+        Fragebogen neu ausfüllen
       </button>
 
       <p className="text-xs text-ink-faint leading-relaxed mt-10">
