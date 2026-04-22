@@ -28,20 +28,22 @@ egal ob offline oder mit Backend betrieben.
 - ✓ Modulares Registry-Pattern (Backend + Frontend), automatische Navigation — existing
 - ✓ In-band Datenmigration pro Modul (schema_version + migrations dict) — existing
 
-### Active
+### Validated in v1.0
 
-- [ ] CR-01: `GET /api/snapshots/{id}` filtert nicht nach user_id — vor Multi-User-Aktivierung beheben (IDOR)
-- [ ] WR-01: `localApi.createSnapshot` hat kein MAX_SNAPSHOTS-Limit (Server erzwingt 200)
-- [ ] WR-02/WR-03: Snapshot-Ladefehler werden still geschluckt; Dropdown-Inkonsistenz bei fehlgeschlagenem getSnapshot
+- ✓ QUAL-01..05: App-Korrektheit — migration write-back, Error Boundary, crypto.randomUUID(), migration guard, token warning — v1.0
+- ✓ DEPS-01..03: Abhängigkeiten — SQLModel pin, vite-plugin-singlefile 2.3.2, Vite 7 + Offline-Build — v1.0
+- ✓ CONT-01..06: Content-Lücken — Checkin-Backend, YSQ Backend+Frontend (18 Schemata, 6-Punkt-Skala), Ergebnisansicht, Summary, Konstanten-Extraktion — v1.0
+- ✓ PORT-01..04: Datenportabilität — Export/Import Backend, API-Client, mode-aware Verdrahtung, deaktivierter Import-Button — v1.0
+- ✓ SNAP-01..06: Snapshot-System — POST/GET/GET-id Backend, create form, Liste, Delta-Vergleich (Values, YSQ, PHQ-9/GAD-7) — v1.0
 
-### Validated in Phase 4 (Snapshot System)
+### Active (v1.1 candidates)
 
-- ✓ SNAP-01: POST /api/snapshots — Snapshot erstellen mit optionalem Label, 201-Response (id, label, created_at)
-- ✓ SNAP-02: GET /api/snapshots — Metadaten-Liste ohne modules-Blob
-- ✓ SNAP-03: GET /api/snapshots/{id} — Vollständiger Snapshot mit forward-migriertem modules-Dict; Migrationsfehler → 200 mit Originaldaten (kein 500)
-- ✓ SNAP-04: Synthese-Seite: "Snapshot erstellen"-Formular mit Label-Eingabe und Button
-- ✓ SNAP-05: Chronologische Snapshot-Liste mit Datum (deutsches Format) und Label
-- ✓ SNAP-06: Delta-Vergleich zweier Snapshots — Values (wichtig/gelebt), YSQ-Scores, PHQ-9/GAD-7
+- [ ] TEST-01: Pytest-Tests für Backend-Migrations-Functions (sichert stille Datenkorruption ab)
+- [ ] TEST-02: Vitest-Tests für `frontend/src/lib/migrations.ts`
+- [ ] TEST-03: Pytest-Integration-Tests für Export→Import-Roundtrip (HTML-v1-Kompatibilität)
+- [ ] UX-01: Delta-Indikator auf PHQ-9/GAD-7 Score-Cards im Checkin-Modul
+- [ ] UX-02: Kompakte Zusammenfassungstabelle im Checkin-Verlauf (letzte 12 Einträge)
+- [ ] INFRA-01: Backend-Logging mit structlog
 
 ### Out of Scope
 
@@ -52,22 +54,19 @@ egal ob offline oder mit Backend betrieben.
 
 ## Context
 
-**Brownfield-Projekt:** Codebase existiert bereits mit substanziellem Fortschritt. Die
-HTML-Referenzversion (`reference/kompass.html`) dient weiter als inhaltliche Quelle für
-YSQ-Items, Werte-Listen usw.
+**Stand nach v1.0 (shipped 2026-04-22):** Alle 24 v1-Anforderungen implementiert.
+~88.500 LOC (Python + TypeScript/TSX), 4 Phasen, 20 Pläne, 111 Commits über 2 Tage.
 
-**Nutzungsmodus:** Beide Modi (local + server) sind relevant — der Nutzer wechselt oder
-hat sich noch nicht festgelegt. Korrektheit in beiden Modi ist daher Pflicht.
+**Tech Stack:** Python 3.12 / FastAPI / SQLModel / Alembic + React 18 / TypeScript / Vite 7 / Tailwind 3.4.
+Vite 7 + vite-plugin-singlefile 2.3.2 produziert Offline-Single-File-HTML.
+
+**Dual-Mode:** localStorage (offline/HTML) und FastAPI-Backend (Docker) — beide Modi produktionsreif.
+
+**Module aktiv:** orientation, checkin (PHQ-9/GAD-7), values, beliefs_schema, beliefs_act, goals,
+obstacles, ysq (YSQ-S3, 6-Punkt, 18 Schemata), synthese (Summary + Snapshot-System).
 
 **Architektur-Konstante:** Registry-Pattern bleibt. Kein neues Modul ohne Eintrag im
 Backend- und Frontend-Registry. Kein State-Management-Framework in v1.
-
-**Bekannte kritische Lücken (aus Codebase-Analyse):**
-- `localApi.getModule` ruft `runMigrations` nicht auf — Daten können nach Schema-Upgrade
-  veraltet sein, ohne Fehlermeldung
-- `checkin`-Modul hat kein Backend-Pendant → 404 im Server-Modus
-- Snapshot-Routen fehlen trotz existierendem DB-Schema
-- Import in App.tsx ruft immer `localApi.importAll` auf, ignoriert den aktiven Storage-Modus
 
 **Ästhetik-Konstante:** CSS-Variablen und Typografie aus `reference/kompass.html` — keine
 Abweichung ohne expliziten Grund. Kein Emoji im UI.
@@ -109,4 +108,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-22 — Phase 4 complete, milestone v1.0 done*
+*Last updated: 2026-04-22 after v1.0 milestone*

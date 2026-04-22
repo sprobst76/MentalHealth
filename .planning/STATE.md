@@ -1,12 +1,11 @@
 ---
 gsd_state_version: 1.0
 milestone: v1.0
-milestone_name: milestone
-current_phase: 4 — Snapshot System
-current_plan: 05 (complete)
-status: milestone_complete
-stopped_at: Phase 4 complete — all 5 plans done. Milestone v1.0 complete.
-last_updated: "2026-04-22T12:00:00Z"
+milestone_name: Kompass MVP
+current_phase: milestone-complete
+status: archived
+stopped_at: milestone v1.0 archived 2026-04-22
+last_updated: "2026-04-22T22:00:00.000Z"
 progress:
   total_phases: 4
   completed_phases: 4
@@ -53,15 +52,17 @@ Phase 4 [==========] 100% (all 5 plans done)
 
 ---
 
+## Deferred Items
+
+Items acknowledged and deferred at milestone close on 2026-04-22:
+
+| Category | Item | Status |
+|----------|------|--------|
+| verification | Phase 02: 02-VERIFICATION.md — 3 browser rendering tests (YSQ questionnaire, results view, Synthese summary block) | human_needed — visual-only, all 6 must-haves verified at 6/6 |
+
 ## Next Action
 
-Milestone v1.0 complete. Run `/gsd-complete-milestone` to archive and start v1.1 planning, or address code review findings:
-
-- **CR-01 (Critical):** `GET /api/snapshots/{id}` does not filter by `user_id` — safe for single-user v1, becomes IDOR when multi-user activates. Fix before enabling multi-user.
-- **WR-01:** `localApi` has no MAX_SNAPSHOTS cap (server enforces 200, local does not).
-- **WR-02/WR-03:** Snapshot list load errors silently swallowed; failed `getSnapshot` leaves dropdown inconsistent.
-
-Run `/gsd-code-review-fix 4` to auto-fix these.
+Milestone v1.0 archived. Run `/gsd-new-milestone` to start v1.1 planning.
 
 ---
 
@@ -98,9 +99,9 @@ None.
 
 ## Session Continuity
 
-**Last session:** 2026-04-22 — Phase 4 (Snapshot System) vollständig abgeschlossen. 5 Pläne, 4 Wellen: TDD RED→GREEN für Backend-API, Frontend-Typen + API-Client, Snapshot-Formular + Liste + Delta-Vergleich in SyntheseModule. Code Review: 1 critical (user_id-Filter fehlt in GET /{id}), 4 warnings. Verifikation: 6/6 SNAP-Anforderungen bestätigt.
+**Last session:** 2026-04-22T19:40:28.103Z
 
-**Stopped at:** Milestone v1.0 complete. Next: `/gsd-code-review-fix 4` for CR-01, or `/gsd-complete-milestone` to archive.
+**Stopped at:** context exhaustion at 90% (2026-04-22)
 
 ---
 
