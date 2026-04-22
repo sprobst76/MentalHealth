@@ -133,6 +133,7 @@ function buildTextReport(allData: Record<string, any>): string {
 }
 
 interface ValueDeltaRow {
+  lc: string;
   label: string;
   weightA: number | null;
   livingA: number | null;
@@ -156,6 +157,7 @@ function computeValuesDelta(snapA: SnapshotFull | null, snapB: SnapshotFull | nu
     const va = selectedA.find((v) => v.label.toLowerCase() === lc);
     const vb = selectedB.find((v) => v.label.toLowerCase() === lc);
     return {
+      lc,
       label: va?.label ?? vb?.label ?? lc,
       weightA: va?.weight ?? null,
       livingA: va?.living ?? null,
@@ -454,7 +456,7 @@ export function SyntheseModule({ allData }: ModuleProps<unknown>) {
                         </thead>
                         <tbody className="divide-y divide-line-soft">
                           {rows.map((r) => (
-                            <tr key={r.label}>
+                            <tr key={r.lc}>
                               <td className="py-2 pr-4 text-ink">{r.label}</td>
                               <td className="py-2 px-2 text-right text-ink-soft">{r.weightA ?? "—"}</td>
                               <td className="py-2 px-2 text-right text-ink-soft">{r.livingA ?? "—"}</td>
