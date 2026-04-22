@@ -115,14 +115,28 @@ async def test_get_snapshot_migrated(client, auth_headers, test_engine):
 async def test_get_snapshot_migration_error(client, auth_headers, test_engine):
     """SNAP-03 / QUAL-04: GET eines Snapshots mit unbekanntem Modul schlaegt nicht fehl (Fallback)."""
     # Snapshot mit unbekanntem Modul direkt in DB einfuegen.
-    # user_id ist beliebig — der GET-Endpoint sucht nur nach der Snapshot-ID,
-    # nicht nach user_id-Filterung bei Einzelabruf.
-    fake_user_id = uuid4()
+    # Den echten user_id des authentifizierten Nutzers ermitteln: ein
+    # authentifizierter API-Call legt den "owner"-User an (lazy creation),
+    # danach koennen wir ihn per DB-Query lesen.
+    from app.models import User as AppUser
+    from sqlmodel import select as sa_select
+
+    # Einen auth. Call machen, damit "owner"-User in der Test-DB existiert.
+    # /api/modules/values verwendet current_user_id → legt "owner"-User lazy an.
+    await client.get("/api/modules/values", headers=auth_headers)
+
+    with Session(test_engine) as session:
+        owner = session.exec(
+            sa_select(AppUser).where(AppUser.name == "owner")
+        ).first()
+        assert owner is not None, "owner-User muss nach auth. API-Call existieren"
+        real_user_id = owner.id
+
     fake_snap_id = uuid4()  # ID vorab speichern — kein Zugriff auf expiriertes Objekt nach commit
 
     fake_snapshot = Snapshot(
         id=fake_snap_id,
-        user_id=fake_user_id,
+        user_id=real_user_id,  # muss mit dem auth. user_id uebereinstimmen (T-4-04)
         label="Fehler-Test",
         data={
             "modules": {

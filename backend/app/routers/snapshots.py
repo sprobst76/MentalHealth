@@ -150,17 +150,20 @@ def list_snapshots(
 def get_snapshot(
     snapshot_id: UUID,
     session: Session = Depends(get_session),
-    user_id: UUID = Depends(current_user_id),  # noqa: ARG001 — auth enforced, single-user v1
+    user_id: UUID = Depends(current_user_id),
 ) -> SnapshotFullResponse:
     """Retrieve a single snapshot with forward-migrated module data.
 
-    Looks up by snapshot_id only (single-user v1 — all snapshots belong to the
-    one authenticated user). Auth is still enforced at the token level via
-    Depends(current_user_id). Module data is forward-migrated on the fly; the
-    snapshot itself is never mutated (immutability guarantee).
+    Filters by both snapshot_id AND user_id (T-4-04) — returns 404 if the
+    snapshot does not exist or belongs to a different user. Module data is
+    forward-migrated on the fly; the snapshot itself is never mutated
+    (immutability guarantee).
     """
     snap = session.exec(
-        select(Snapshot).where(Snapshot.id == snapshot_id)
+        select(Snapshot).where(
+            Snapshot.id == snapshot_id,
+            Snapshot.user_id == user_id,  # enforces T-4-04
+        )
     ).first()
 
     if snap is None:
