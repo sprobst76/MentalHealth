@@ -23,6 +23,7 @@ import { api } from "../../api";
 import type { SnapshotMeta, SnapshotFull } from "../../types";
 import { YSQ_SCHEMAS } from "../ysq/constants";
 import type { YsqData } from "../ysq/types";
+import { InsightsBlock } from "./InsightsBlock";
 
 function buildTextReport(allData: Record<string, any>): string {
   const lines: string[] = [];
@@ -217,7 +218,11 @@ function computeCheckinDelta(
   };
 }
 
-export function SyntheseModule({ allData }: ModuleProps<unknown>) {
+export function SyntheseModule({ allData, ...rest }: ModuleProps<unknown>) {
+  // TODO(05-03): Remove cast after ModuleProps gains onNavigateToGoals
+  const onNavigateToGoals = (rest as any).onNavigateToGoals as
+    | ((prefill: { title: string; description: string }) => void)
+    | undefined;
   const [copied, setCopied] = useState(false);
   const [snaps, setSnaps] = useState<SnapshotMeta[]>([]);
   const [snapLabel, setSnapLabel] = useState("");
@@ -351,6 +356,8 @@ export function SyntheseModule({ allData }: ModuleProps<unknown>) {
           </Card>
         );
       })}
+
+      <InsightsBlock allData={allData} onNavigateToGoals={onNavigateToGoals} />
 
       <section className="mt-8 print:hidden">
         <h2 className="display text-2xl text-ink mb-6">Snapshots</h2>
