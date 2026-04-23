@@ -1,22 +1,22 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.0
-milestone_name: Kompass MVP
-current_phase: milestone-complete
-status: archived
-stopped_at: milestone v1.0 archived 2026-04-22
-last_updated: "2026-04-22T22:00:00.000Z"
+milestone: v1.1
+milestone_name: Schema-Guided Insights
+current_phase: 5
+status: ready_to_plan
+stopped_at: ~
+last_updated: "2026-04-23T00:00:00.000Z"
 progress:
-  total_phases: 4
-  completed_phases: 4
-  total_plans: 20
-  completed_plans: 20
-  percent: 100
+  total_phases: 1
+  completed_phases: 0
+  total_plans: 3
+  completed_plans: 0
+  percent: 0
 ---
 
 # Kompass — Project State
 
-**Last updated:** 2026-04-22
+**Last updated:** 2026-04-23
 
 ---
 
@@ -24,37 +24,38 @@ progress:
 
 **Core value:** Ein verlässlicher privater Raum, in dem Reflexionsarbeit über lange Zeit erhalten bleibt — egal ob offline oder mit Backend betrieben.
 
-**Current milestone:** v1 Completion — **COMPLETE**
+**Current milestone:** v1.1 — Schema-Guided Insights
 
 **Key files:**
 
 - [PROJECT.md](.planning/PROJECT.md) — scope, constraints, key decisions
-- [REQUIREMENTS.md](.planning/REQUIREMENTS.md) — all 24 v1 requirements with IDs
-- [ROADMAP.md](.planning/ROADMAP.md) — 4 phases, success criteria, plans
+- [REQUIREMENTS.md](.planning/REQUIREMENTS.md) — 5 v1.1 requirements (HINT-01..05)
+- [ROADMAP.md](.planning/ROADMAP.md) — Phase 5, 3 plans (TBD)
 
 ---
 
 ## Current Position
 
-**Current phase:** 4 — Snapshot System (complete)
-**Status:** All 4 phases complete — milestone v1.0 done
+**Current phase:** Phase 5 — Schema-Guided Insights
+**Status:** Roadmap defined — ready to plan Phase 5
 
 **Progress bar:**
 
 ```
-Phase 1 [==========] 100% (all 4 plans complete)
-Phase 2 [==========] 100% (all 8 plans complete)
-Phase 3 [==========] 100% (all 3 plans complete)
-Phase 4 [==========] 100% (all 5 plans done)
+Phase 5 [          ] 0/3 plans complete
 ```
 
-**Requirements covered:** 24 / 24
+**Requirements covered:** 5 / 5
+
+**Planned phases:**
+- Phase 5: Schema-Guided Insights (3 plans)
+  - 05-01: Schema hints constants (18 schema mappings in constants.ts)
+  - 05-02: InsightsBlock component on Synthese page (YSQ top-3 + Values gap)
+  - 05-03: "Als Ziel erkunden" quick-link wiring (navigate + pre-fill)
 
 ---
 
-## Deferred Items
-
-Items acknowledged and deferred at milestone close on 2026-04-22:
+## Deferred Items (from v1.0)
 
 | Category | Item | Status |
 |----------|------|--------|
@@ -62,7 +63,7 @@ Items acknowledged and deferred at milestone close on 2026-04-22:
 
 ## Next Action
 
-Milestone v1.0 archived. Run `/gsd-new-milestone` to start v1.1 planning.
+Run `/gsd-plan-phase 5` to create the Phase 5 implementation plan.
 
 ---
 
@@ -79,6 +80,7 @@ Milestone v1.0 archived. Run `/gsd-new-milestone` to start v1.1 planning.
 - Offline build runs via Docker (node:20-alpine) because host Node 18 is below Vite 7's minimum of 20.19
 - YSQ answers/draft use `list[int | None] | None` — outer None = no run yet, inner None = skipped item; mirrors TypeScript `YsqAnswer[] | null` exactly
 - `GET /api/snapshots/{id}` intentionally does not filter by user_id (single-user v1); auth enforced at token level only
+- v1.1 Phase 5 is frontend-only — no backend routes needed; reads existing allData via allData prop on SyntheseModule
 
 ### Known pitfalls (from research)
 
@@ -99,10 +101,11 @@ None.
 
 ## Session Continuity
 
-**Last session:** 2026-04-22T19:40:28.103Z
+**Last session:** 2026-04-23 — roadmap created for v1.1
 
-**Stopped at:** context exhaustion at 90% (2026-04-22)
+**Stopped at:** roadmap defined, plans not yet created
 
 ---
 
 *State initialized: 2026-04-21*
+*Updated: 2026-04-23 — v1.1 roadmap defined, Phase 5 ready to plan*

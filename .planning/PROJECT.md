@@ -12,6 +12,16 @@ und React-Frontend fortgeführt. Single-user, für private, langfristige Nutzung
 Ein verlässlicher privater Raum, in dem Reflexionsarbeit über lange Zeit erhalten bleibt —
 egal ob offline oder mit Backend betrieben.
 
+## Current Milestone: v1.1 Schema-Guided Insights
+
+**Goal:** Fragebogen-Ergebnisse (YSQ, Werte) auf der Synthese-Seite zu konkreten Hinweisen auf Ziele und Hindernisse verdichten — regelbasiert, offline-fähig, kein LLM.
+
+**Target features:**
+- Statische Mapping-Tabelle: 18 YSQ-Schemata → typische Heilungsziele + häufige Hindernisse
+- Insights-Block auf Synthese-Seite für Top-3-Schemata
+- Werte-Gap-Analyse: Bereiche mit hohem wichtig/gelebt-Abstand hervorheben
+- Quick-Link "Als Ziel erkunden" → Ziele-Modul mit Vorausfüllung
+
 ## Requirements
 
 ### Validated
@@ -36,14 +46,13 @@ egal ob offline oder mit Backend betrieben.
 - ✓ PORT-01..04: Datenportabilität — Export/Import Backend, API-Client, mode-aware Verdrahtung, deaktivierter Import-Button — v1.0
 - ✓ SNAP-01..06: Snapshot-System — POST/GET/GET-id Backend, create form, Liste, Delta-Vergleich (Values, YSQ, PHQ-9/GAD-7) — v1.0
 
-### Active (v1.1 candidates)
+### Active (v1.1)
 
-- [ ] TEST-01: Pytest-Tests für Backend-Migrations-Functions (sichert stille Datenkorruption ab)
-- [ ] TEST-02: Vitest-Tests für `frontend/src/lib/migrations.ts`
-- [ ] TEST-03: Pytest-Integration-Tests für Export→Import-Roundtrip (HTML-v1-Kompatibilität)
-- [ ] UX-01: Delta-Indikator auf PHQ-9/GAD-7 Score-Cards im Checkin-Modul
-- [ ] UX-02: Kompakte Zusammenfassungstabelle im Checkin-Verlauf (letzte 12 Einträge)
-- [ ] INFRA-01: Backend-Logging mit structlog
+- [ ] HINT-01: Statische Mapping-Tabelle — 18 YSQ-Schemata → Heilungsziele + Hindernisse (constants.ts)
+- [ ] HINT-02: Insights-Block auf Synthese-Seite für Top-3-Schemata (Heilungsrichtung, Zielvorschläge, Hindernishinweise)
+- [ ] HINT-03: Werte-Gap-Hervorhebung (wichtig − gelebt ≥ 2) auf Synthese-Seite
+- [ ] HINT-04: "Als Ziel erkunden"-Button → Ziele-Modul mit Vorausfüllung
+- [ ] HINT-05: Alle Insight-Texte in constants.ts, keine Hardcodes im Component
 
 ### Out of Scope
 
@@ -108,4 +117,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-22 after v1.0 milestone*
+*Last updated: 2026-04-23 — v1.1 milestone started*
