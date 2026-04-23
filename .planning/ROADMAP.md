@@ -35,7 +35,13 @@ Full details: [milestones/v1.0-ROADMAP.md](milestones/v1.0-ROADMAP.md)
   3. Ein Klick auf "Als Ziel erkunden" im Schema-Insights-Block öffnet das Ziele-Modul mit vorausgefülltem Schema-Namen und Zieltext, den der Nutzer vor dem Speichern bearbeiten kann.
   4. Alle angezeigten Hinweistexte stammen ausnahmslos aus constants.ts-Dateien — keine Inline-Strings im Component-Body.
   5. Die Synthese-Seite zeigt keinerlei Insights-Blöcke, wenn das YSQ noch nicht ausgefüllt wurde (keine leeren oder fehlerhaften Blöcke).
-**Plans**: TBD
+**Plans**: 3 plans
+
+Plans:
+- [ ] 05-01-PLAN.md — Vitest setup + ysq/hints.ts (18 schema mappings) + lib/insights.ts (score/gap functions) + unit tests
+- [ ] 05-02-PLAN.md — InsightsBlock component (top-3 schema cards + values gap section) + synthese/constants.ts + wired into SyntheseModule
+- [ ] 05-03-PLAN.md — Navigate + prefill wiring (ModuleProps extension, App.tsx goalPrefill state, GoalsModule useEffect)
+
 **UI hint**: yes
 
 ## Progress
@@ -51,4 +57,4 @@ Full details: [milestones/v1.0-ROADMAP.md](milestones/v1.0-ROADMAP.md)
 ---
 
 *Roadmap created: 2026-04-21*
-*Updated: 2026-04-23 — v1.1 Phase 5 added*
+*Updated: 2026-04-23 — v1.1 Phase 5 plans created*
