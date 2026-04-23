@@ -218,11 +218,7 @@ function computeCheckinDelta(
   };
 }
 
-export function SyntheseModule({ allData, ...rest }: ModuleProps<unknown>) {
-  // TODO(05-03): Remove cast after ModuleProps gains onNavigateToGoals
-  const onNavigateToGoals = (rest as any).onNavigateToGoals as
-    | ((prefill: { title: string; description: string }) => void)
-    | undefined;
+export function SyntheseModule({ allData, onNavigateToGoals }: ModuleProps<unknown>) {
   const [copied, setCopied] = useState(false);
   const [snaps, setSnaps] = useState<SnapshotMeta[]>([]);
   const [snapLabel, setSnapLabel] = useState("");

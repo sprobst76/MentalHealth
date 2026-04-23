@@ -14,6 +14,7 @@ export interface ModuleProps<T> {
   data: T;
   onChange: (next: T) => void;
   allData: AllData;
+  onNavigateToGoals?: (prefill: { title: string; description: string }) => void;
 }
 
 export interface SummaryProps<T> {
