@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Card } from "../../components/Card";
 import { Chip } from "../../components/Chip";
 import { PhaseHeader } from "../../components/PhaseHeader";
@@ -8,12 +8,50 @@ import type { ValuesData } from "../values/types";
 import { HORIZON_LABEL, STATUS_LABEL, GOAL_PROMPTS } from "./constants";
 import type { Goal, GoalsData, GoalStatus, Horizon } from "./types";
 
+// Type guard for the __goalPrefill protocol key injected by App.tsx (HINT-04).
+// Avoids unsafe (as any) casts — per RESEARCH.md Pitfall 4.
+interface GoalPrefillData {
+  title: string;
+  description: string;
+}
+
+function isGoalPrefill(v: unknown): v is GoalPrefillData {
+  return (
+    typeof v === "object" &&
+    v !== null &&
+    "title" in v &&
+    "description" in v &&
+    typeof (v as GoalPrefillData).title === "string" &&
+    typeof (v as GoalPrefillData).description === "string"
+  );
+}
+
 const HORIZONS: Horizon[] = ["30days", "quarter", "year", "longer"];
 const STATUSES: GoalStatus[] = ["active", "achieved", "paused"];
 
 export function GoalsModule({ data, onChange, allData }: ModuleProps<GoalsData>) {
   const [openId, setOpenId] = useState<string | null>(null);
   const [showGoalGuide, setShowGoalGuide] = useState(false);
+
+  // Reads __goalPrefill from allData on first mount.
+  // Fires once (empty dep array) — safe because this is a one-shot navigation action.
+  // App.tsx clears goalPrefill via setTimeout after the same render tick, so
+  // subsequent remounts of GoalsModule will not find __goalPrefill in allData.
+  useEffect(() => {
+    const raw = (allData as Record<string, unknown>).__goalPrefill;
+    if (!isGoalPrefill(raw)) return;
+    const fresh: Goal = {
+      id: uid(),
+      title: raw.title,
+      description: raw.description,
+      value_refs: [],
+      horizon: "quarter",
+      first_step: "",
+      status: "active",
+    };
+    onChange({ ...data, goals: [...data.goals, fresh] });
+    setOpenId(fresh.id);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const valueOptions = useMemo(() => {
     const vd = allData?.values as ValuesData | undefined;

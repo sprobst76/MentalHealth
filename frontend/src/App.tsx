@@ -6,6 +6,7 @@ import { runMigrations } from "./lib/migrations";
 import { PHQ9_SUICIDE_ITEM_INDEX } from "./modules/checkin/constants";
 import type { CheckinData } from "./modules/checkin/types";
 import { getModule, modules } from "./modules/registry";
+import type { AllData } from "./types";
 
 const isLocal = import.meta.env.VITE_STORAGE === "local";
 
@@ -62,6 +63,10 @@ export default function App() {
   const [store, setStore] = useState<Store>(() => emptyStore());
   const [importKey, setImportKey] = useState(0);
   const fileRef = useRef<HTMLInputElement>(null);
+  const [goalPrefill, setGoalPrefill] = useState<{
+    title: string;
+    description: string;
+  } | null>(null);
 
   const loadModule = useCallback(async (id: string) => {
     const mod = getModule(id);
@@ -99,11 +104,22 @@ export default function App() {
     [],
   );
 
+  function handleNavigateToGoals(prefill: { title: string; description: string }) {
+    setGoalPrefill(prefill);
+    setActiveId("goals");
+    // Clear prefill after one render tick so GoalsModule reads it once on mount,
+    // then allData no longer contains __goalPrefill on subsequent renders.
+    setTimeout(() => setGoalPrefill(null), 0);
+  }
+
   const [helpOpen, setHelpOpen] = useState(false);
 
   const active = getModule(activeId);
   const state = store[activeId];
-  const allData = Object.fromEntries(modules.map((m) => [m.id, store[m.id]?.data]));
+  const allData: AllData = {
+    ...Object.fromEntries(modules.map((m) => [m.id, store[m.id]?.data])),
+    ...(activeId === "goals" && goalPrefill ? { __goalPrefill: goalPrefill } : {}),
+  };
 
   const checkinData = allData?.checkin as CheckinData | undefined;
   const latestEntry = checkinData?.entries?.[0];
@@ -192,6 +208,7 @@ export default function App() {
               data={state.data}
               onChange={handleChange(active.id)}
               allData={allData}
+              onNavigateToGoals={handleNavigateToGoals}
             />
           ) : (
             <div className="p-12 text-ink-faint">Lade…</div>
