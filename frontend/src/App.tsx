@@ -104,12 +104,15 @@ export default function App() {
     [],
   );
 
+  // Clear goalPrefill whenever user navigates away from Goals — ensures one-shot
+  // behaviour without racing against the async loadModule call.
+  useEffect(() => {
+    if (activeId !== "goals") setGoalPrefill(null);
+  }, [activeId]);
+
   function handleNavigateToGoals(prefill: { title: string; description: string }) {
     setGoalPrefill(prefill);
     setActiveId("goals");
-    // Clear prefill after one render tick so GoalsModule reads it once on mount,
-    // then allData no longer contains __goalPrefill on subsequent renders.
-    setTimeout(() => setGoalPrefill(null), 0);
   }
 
   const [helpOpen, setHelpOpen] = useState(false);
