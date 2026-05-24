@@ -1,0 +1,9 @@
+# Persoenliche Daten - niemals committen
+cookie.txt
+*.cookie
+gc-backup/
+gc-diagnose/
+pocket-queries/
+*-backup.json
+*.gpx
+*.settings.html
