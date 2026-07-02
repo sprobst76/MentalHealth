@@ -68,9 +68,21 @@ export default function App() {
     description: string;
   } | null>(null);
 
+  // Refs let loadModule read latest values without stale-closure deps.
+  const prefillNavRef = useRef(false);
+  const storeRef = useRef(store);
+  storeRef.current = store;
+
   const loadModule = useCallback(async (id: string) => {
     const mod = getModule(id);
     if (!mod) return;
+    // If navigating to Goals with an active prefill and Goals is already loaded, skip
+    // the GET — GoalsModule's mount-effect applies the prefill without a race where the
+    // GET response returns stale data and overwrites the optimistically-added goal.
+    if (id === "goals" && prefillNavRef.current) {
+      prefillNavRef.current = false;
+      if (storeRef.current["goals"]?.loaded) return;
+    }
     if (mod.kind === "special") {
       setStore((s) => ({ ...s, [id]: { data: mod.defaultData(), loaded: true, error: null } }));
       return;
@@ -111,6 +123,7 @@ export default function App() {
   }, [activeId]);
 
   function handleNavigateToGoals(prefill: { title: string; description: string }) {
+    prefillNavRef.current = true;
     setGoalPrefill(prefill);
     setActiveId("goals");
   }

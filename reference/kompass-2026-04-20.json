@@ -1,0 +1,226 @@
+{
+  "_version": 1,
+  "_exported": "2026-04-20T16:34:01.372Z",
+  "orientation": {
+    "schema_version": 1,
+    "data": {
+      "responses": [
+        {
+          "item_id": "au01",
+          "rating": 4
+        },
+        {
+          "item_id": "au02",
+          "rating": 5
+        },
+        {
+          "item_id": "au03",
+          "rating": 2
+        },
+        {
+          "item_id": "au04",
+          "rating": 5
+        },
+        {
+          "item_id": "au05",
+          "rating": 3
+        },
+        {
+          "item_id": "au06",
+          "rating": 4
+        },
+        {
+          "item_id": "au07",
+          "rating": 2
+        },
+        {
+          "item_id": "au08",
+          "rating": 4
+        },
+        {
+          "item_id": "co01",
+          "rating": 4
+        },
+        {
+          "item_id": "co02",
+          "rating": 3
+        },
+        {
+          "item_id": "co03",
+          "rating": 5
+        },
+        {
+          "item_id": "co04",
+          "rating": 4
+        },
+        {
+          "item_id": "co05",
+          "rating": 4
+        },
+        {
+          "item_id": "co06",
+          "rating": 5
+        },
+        {
+          "item_id": "co07",
+          "rating": 4
+        },
+        {
+          "item_id": "co08",
+          "rating": 4
+        },
+        {
+          "item_id": "sw01",
+          "rating": 5
+        },
+        {
+          "item_id": "sw02",
+          "rating": 4
+        },
+        {
+          "item_id": "sw03",
+          "rating": 4
+        },
+        {
+          "item_id": "sw04",
+          "rating": 4
+        },
+        {
+          "item_id": "sw05",
+          "rating": 2
+        },
+        {
+          "item_id": "sw06",
+          "rating": 3
+        },
+        {
+          "item_id": "sw07",
+          "rating": 3
+        },
+        {
+          "item_id": "sw08",
+          "rating": 4
+        },
+        {
+          "item_id": "sa01",
+          "rating": 4
+        },
+        {
+          "item_id": "sa02",
+          "rating": 4
+        },
+        {
+          "item_id": "sa03",
+          "rating": 2
+        },
+        {
+          "item_id": "sa04",
+          "rating": 2
+        },
+        {
+          "item_id": "sa05",
+          "rating": 2
+        },
+        {
+          "item_id": "sa06",
+          "rating": 3
+        },
+        {
+          "item_id": "sa07",
+          "rating": 3
+        },
+        {
+          "item_id": "sa08",
+          "rating": 4
+        },
+        {
+          "item_id": "me01",
+          "rating": 4
+        },
+        {
+          "item_id": "me02",
+          "rating": 3
+        },
+        {
+          "item_id": "me03",
+          "rating": 4
+        },
+        {
+          "item_id": "me04",
+          "rating": 4
+        },
+        {
+          "item_id": "me05",
+          "rating": 3
+        },
+        {
+          "item_id": "me06",
+          "rating": 3
+        },
+        {
+          "item_id": "me07",
+          "rating": 4
+        },
+        {
+          "item_id": "me08",
+          "rating": 4
+        },
+        {
+          "item_id": "ex01",
+          "rating": 5
+        },
+        {
+          "item_id": "ex02",
+          "rating": 2
+        },
+        {
+          "item_id": "ex03",
+          "rating": 5
+        },
+        {
+          "item_id": "ex04",
+          "rating": 1
+        },
+        {
+          "item_id": "ex05",
+          "rating": 4
+        },
+        {
+          "item_id": "ex06",
+          "rating": 4
+        },
+        {
+          "item_id": "ex07",
+          "rating": 4
+        },
+        {
+          "item_id": "ex08",
+          "rating": 4
+        }
+      ]
+    },
+    "updated_at": "2026-04-20T16:29:28.165Z"
+  },
+  "values": {
+    "schema_version": 1,
+    "data": {
+      "selected": [
+        {
+          "id": "freedom",
+          "label": "Freiheit",
+          "weight": 0,
+          "note": ""
+        },
+        {
+          "id": "honesty",
+          "label": "Ehrlichkeit",
+          "weight": 0,
+          "note": ""
+        }
+      ],
+      "intentions": [],
+      "reflection": ""
+    },
+    "updated_at": "2026-04-20T16:07:49.981Z"
+  }
+}

@@ -35,7 +35,7 @@ export function GoalsModule({ data, onChange, allData }: ModuleProps<GoalsData>)
 
   // Reads __goalPrefill from allData on first mount.
   // Fires once (empty dep array) — safe because this is a one-shot navigation action.
-  // App.tsx clears goalPrefill via setTimeout after the same render tick, so
+  // App.tsx clears goalPrefill via useEffect([activeId]) when leaving Goals, so
   // subsequent remounts of GoalsModule will not find __goalPrefill in allData.
   useEffect(() => {
     const raw = (allData as Record<string, unknown>).__goalPrefill;

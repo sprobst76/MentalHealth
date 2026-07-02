@@ -1,0 +1,41 @@
+{
+  "version": "1.0",
+  "timestamp": "2026-04-23T11:18:14Z",
+  "phase": "5",
+  "phase_name": "Schema-Guided Insights",
+  "phase_dir": ".planning/phases/05-schema-guided-insights",
+  "plan": null,
+  "task": null,
+  "total_tasks": null,
+  "status": "paused",
+  "completed_tasks": [
+    {"id": "05-01", "name": "Vitest Setup + Schema Hints Constants", "status": "done", "commit": "73c6289"},
+    {"id": "05-02", "name": "InsightsBlock Component", "status": "done", "commit": "655d695"},
+    {"id": "05-03", "name": "Navigate + Prefill Wiring", "status": "done", "commit": "ef6e98a"},
+    {"id": "fix-timing", "name": "Fix goalPrefill timing bug (setTimeout → useEffect)", "status": "done", "commit": "1435f23"},
+    {"id": "demo-json", "name": "demo-testcase.json erstellt und Feldnamen korrigiert", "status": "done", "commit": null}
+  ],
+  "remaining_tasks": [
+    {"id": "uat-browser", "name": "Browser-UAT: alle 5 Punkte aus 05-HUMAN-UAT.md manuell testen", "status": "not_started"},
+    {"id": "phase-complete", "name": "Phase 5 als abgeschlossen markieren (nach UAT-Approval)", "status": "not_started"},
+    {"id": "code-review-fix", "name": "WR-01 + WR-02 aus REVIEW.md optional fixen (advisory)", "status": "not_started"}
+  ],
+  "blockers": [],
+  "human_actions_pending": [
+    {
+      "action": "Browser-UAT durchführen: http://localhost:5173 — demo-testcase.json importieren, alle 5 Punkte aus 05-HUMAN-UAT.md prüfen",
+      "context": "Verification hat status: human_needed — alle automatisierten Checks (9/9) bestanden, 5 visuelle Browser-Tests ausstehend",
+      "blocking": true
+    }
+  ],
+  "decisions": [
+    {"decision": "goalPrefill per useEffect([activeId]) clearen statt setTimeout(0)", "rationale": "setTimeout(0) ist Macrotask, API-Call ist Microtask — bei noch nicht geladenem Goals-Modul feuerte Timeout vor Promise-Auflösung → leere Ziele", "phase": "5"},
+    {"decision": "demo-testcase.json im Projekt-Root abgelegt", "rationale": "Einfach importierbar per 'Daten importieren' im Frontend", "phase": "5"}
+  ],
+  "uncommitted_files": [
+    "demo-testcase.json",
+    ".planning/STATE.md"
+  ],
+  "next_action": "Browser öffnen: http://localhost:5173 → Daten importieren (demo-testcase.json) → Synthese aufrufen → InsightsBlock prüfen → UAT-Punkte durchgehen → bei Approval: /gsd-execute-phase 5 --gaps oder Phase manuell abschließen",
+  "context_notes": "Phase 5 vollständig implementiert. Alle 3 Pläne ausgeführt, 19 Tests grün, TypeScript clean. Timing-Bug im goalPrefill-Flow gefunden und gefixt. demo-testcase.json enthält realistische Testdaten (YSQ ausgefüllt, Werte mit Gaps, leere Ziele). Backend läuft auf :8000, Frontend auf :5173."
+}

@@ -1,0 +1,177 @@
+{
+  "_version": 1,
+  "_exported": "2026-04-23T09:00:00.000Z",
+  "_note": "Demo-Testdaten für Phase-5-UAT — InsightsBlock, Werte-Gaps, Ziel-Prefill",
+
+  "orientation": {
+    "schema_version": 1,
+    "data": {
+      "responses": [
+        { "item_id": "au01", "rating": 4 },
+        { "item_id": "au02", "rating": 3 },
+        { "item_id": "au03", "rating": 5 },
+        { "item_id": "au04", "rating": 3 },
+        { "item_id": "au05", "rating": 4 },
+        { "item_id": "au06", "rating": 3 },
+        { "item_id": "au07", "rating": 4 },
+        { "item_id": "au08", "rating": 3 },
+        { "item_id": "co01", "rating": 5 },
+        { "item_id": "co02", "rating": 4 },
+        { "item_id": "co03", "rating": 5 },
+        { "item_id": "co04", "rating": 3 },
+        { "item_id": "co05", "rating": 4 },
+        { "item_id": "co06", "rating": 5 },
+        { "item_id": "co07", "rating": 4 },
+        { "item_id": "co08", "rating": 3 },
+        { "item_id": "sw01", "rating": 2 },
+        { "item_id": "sw02", "rating": 3 },
+        { "item_id": "sw03", "rating": 2 },
+        { "item_id": "sw04", "rating": 3 },
+        { "item_id": "sw05", "rating": 4 },
+        { "item_id": "sw06", "rating": 2 },
+        { "item_id": "sw07", "rating": 3 },
+        { "item_id": "sw08", "rating": 2 },
+        { "item_id": "sa01", "rating": 3 },
+        { "item_id": "sa02", "rating": 4 },
+        { "item_id": "sa03", "rating": 3 },
+        { "item_id": "sa04", "rating": 3 },
+        { "item_id": "sa05", "rating": 4 },
+        { "item_id": "sa06", "rating": 3 },
+        { "item_id": "sa07", "rating": 3 },
+        { "item_id": "sa08", "rating": 4 },
+        { "item_id": "me01", "rating": 5 },
+        { "item_id": "me02", "rating": 5 },
+        { "item_id": "me03", "rating": 4 },
+        { "item_id": "me04", "rating": 5 },
+        { "item_id": "me05", "rating": 4 },
+        { "item_id": "me06", "rating": 5 },
+        { "item_id": "me07", "rating": 4 },
+        { "item_id": "me08", "rating": 5 },
+        { "item_id": "ex01", "rating": 4 },
+        { "item_id": "ex02", "rating": 3 },
+        { "item_id": "ex03", "rating": 4 },
+        { "item_id": "ex04", "rating": 3 },
+        { "item_id": "ex05", "rating": 4 },
+        { "item_id": "ex06", "rating": 3 },
+        { "item_id": "ex07", "rating": 4 },
+        { "item_id": "ex08", "rating": 3 }
+      ]
+    },
+    "updated_at": "2026-04-23T09:00:00.000Z"
+  },
+
+  "ysq": {
+    "schema_version": 1,
+    "data": {
+      "notes": {},
+      "answers": [
+        3, 3, 2, 3, 3,
+        2, 2, 2, 1, 2,
+        4, 3, 4, 3, 3,
+        2, 2, 3, 2, 2,
+        2, 3, 2, 2, 3,
+        2, 2, 2, 2, 1,
+        2, 2, 2, 3, 2,
+        2, 2, 2, 2, 2,
+        3, 3, 4, 3, 3,
+        1, 2, 1, 2, 1,
+        2, 2, 3, 2, 2,
+        3, 3, 3, 2, 3,
+        5, 5, 5, 4, 5,
+        5, 4, 5, 4, 4,
+        3, 4, 3, 3, 3,
+        3, 3, 4, 3, 3,
+        6, 5, 6, 5, 5,
+        2, 2, 2, 2, 2
+      ],
+      "draft": null
+    },
+    "updated_at": "2026-04-23T09:00:00.000Z"
+  },
+
+  "values": {
+    "schema_version": 1,
+    "data": {
+      "selected": [
+        { "id": "connection", "label": "Verbundenheit", "weight": 5, "living": 2, "note": "Echte Tiefe in Beziehungen — fühlt sich selten erreichbar an." },
+        { "id": "authenticity", "label": "Authentizität", "weight": 5, "living": 3, "note": "Oft passe ich mich an, statt zu sagen was ich wirklich denke." },
+        { "id": "meaning", "label": "Sinnhaftigkeit", "weight": 5, "living": 2, "note": "Viel Beschäftigung, wenig echtes Wozu." },
+        { "id": "autonomy", "label": "Autonomie", "weight": 4, "living": 2, "note": "Entscheide zu viel nach dem was andere erwarten." },
+        { "id": "health", "label": "Gesundheit", "weight": 4, "living": 3, "note": "" },
+        { "id": "creativity", "label": "Kreativität", "weight": 3, "living": 3, "note": "" },
+        { "id": "honesty", "label": "Ehrlichkeit", "weight": 4, "living": 4, "note": "Im Großen ehrlich, im Kleinen schweigsam." }
+      ],
+      "custom": []
+    },
+    "updated_at": "2026-04-23T09:00:00.000Z"
+  },
+
+  "beliefs_schema": {
+    "schema_version": 1,
+    "data": {
+      "entries": [
+        {
+          "id": "bs-01",
+          "text": "Ich muss Leistung bringen, damit ich gemocht werde.",
+          "category": "conditional",
+          "strength": 4,
+          "reframe": "",
+          "note": "Sitzt tief — besonders bei neuen Menschen."
+        },
+        {
+          "id": "bs-02",
+          "text": "Wenn ich Schwäche zeige, verliere ich den Respekt anderer.",
+          "category": "conditional",
+          "strength": 3,
+          "reframe": "Verletzlichkeit ist keine Schwäche.",
+          "note": ""
+        }
+      ],
+      "reflection": ""
+    },
+    "updated_at": "2026-04-23T09:00:00.000Z"
+  },
+
+  "beliefs_act": {
+    "schema_version": 1,
+    "data": {
+      "commitments": [
+        {
+          "id": "ba-01",
+          "text": "Ich bin nicht gut genug.",
+          "fusion_strength": 4,
+          "defusion_note": "Ich habe den Gedanken, dass ich nicht gut genug bin.",
+          "note": ""
+        }
+      ],
+      "reflection": ""
+    },
+    "updated_at": "2026-04-23T09:00:00.000Z"
+  },
+
+  "goals": {
+    "schema_version": 1,
+    "data": {
+      "goals": [],
+      "reflection": ""
+    },
+    "updated_at": "2026-04-23T09:00:00.000Z"
+  },
+
+  "obstacles": {
+    "schema_version": 1,
+    "data": {
+      "obstacles": [],
+      "reflection": ""
+    },
+    "updated_at": "2026-04-23T09:00:00.000Z"
+  },
+
+  "checkin": {
+    "schema_version": 1,
+    "data": {
+      "entries": []
+    },
+    "updated_at": "2026-04-23T09:00:00.000Z"
+  }
+}
